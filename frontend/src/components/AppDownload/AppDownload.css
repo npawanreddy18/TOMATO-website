@@ -1,0 +1,96 @@
+.app-download {
+    width: 100%;
+    padding: 80px 20px;
+    margin: 60px auto 0;
+    text-align: center;
+    background: linear-gradient(135deg, #fff5f1, #ffffff);
+    border-radius: 20px;
+    box-sizing: border-box;
+}
+
+.app-download p {
+    margin: 0;
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: #262626;
+}
+
+.app-download p::first-line {
+    color: #ff4c24;
+}
+
+.app-download-platforms {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 35px;
+}
+
+.app-download-platforms img {
+    width: 170px;
+    height: auto;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.app-download-platforms img:hover {
+    transform: translateY(-6px) scale(1.03);
+}
+
+
+/* =========================
+   TABLET
+   ========================= */
+
+@media (max-width: 750px) {
+
+    .app-download {
+        padding: 60px 20px;
+        margin-top: 50px;
+    }
+
+    .app-download p {
+        font-size: 28px;
+    }
+
+    .app-download-platforms {
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .app-download-platforms img {
+        width: 150px;
+    }
+}
+
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 480px) {
+
+    .app-download {
+        padding: 45px 15px;
+        margin-top: 40px;
+        border-radius: 15px;
+    }
+
+    .app-download p {
+        font-size: 23px;
+        line-height: 1.4;
+    }
+
+    .app-download-platforms {
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 25px;
+    }
+
+    .app-download-platforms img {
+        width: 180px;
+    }
+}

@@ -1,0 +1,222 @@
+.explore-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.explore-menu h1 {
+    color: #1f1a1a;
+    font-weight: 600;
+    font-size: max(2.5vw, 28px);
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.explore-menu-text {
+    max-width: 65%;
+    color: #302c2c;
+    line-height: 1.7;
+    font-size: 15px;
+    margin: 0;
+}
+
+
+/* =========================
+   MENU LIST
+   ========================= */
+
+.explore-menu-list {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 30px;
+    text-align: center;
+
+    overflow-x: auto;
+    padding: 10px 5px 15px;
+
+    scroll-behavior: smooth;
+}
+
+.explore-menu-list::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* =========================
+   MENU ITEM
+   ========================= */
+
+.explore-menu-list-item {
+    min-width: 100px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 12px;
+
+    cursor: pointer;
+
+    transition: transform 0.3s ease;
+}
+
+.explore-menu-list-item:hover {
+    transform: translateY(-5px);
+}
+
+
+/* =========================
+   MENU IMAGE
+   ========================= */
+
+.explore-menu-list-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    padding: 3px;
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.explore-menu-list-item:hover img {
+    transform: scale(1.07);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================
+   ACTIVE MENU
+   ========================= */
+
+.explore-menu-list-item img.active {
+    border: 3px solid #ff4c24;
+    padding: 3px;
+    box-shadow: 0 0 0 4px rgba(255, 76, 36, 0.12);
+}
+
+
+/* =========================
+   MENU NAME
+   ========================= */
+
+.explore-menu-list-item p {
+    margin: 0;
+    color: #262626;
+    font-size: 17px;
+    font-weight: 400;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+}
+
+.explore-menu-list-item:hover p {
+    color: #221d1c;
+}
+
+
+/* =========================
+   DIVIDER
+   ========================= */
+
+.explore-menu hr {
+    margin: 15px 0 5px;
+    height: 1px;
+    border: none;
+    background: #e5e5e5;
+}
+
+
+/* =========================
+   TABLET
+   ========================= */
+
+@media (max-width: 900px) {
+
+    .explore-menu-text {
+        max-width: 80%;
+    }
+
+    .explore-menu-list {
+        gap: 25px;
+        justify-content: flex-start;
+    }
+
+    .explore-menu-list-item {
+        min-width: 95px;
+    }
+
+    .explore-menu-list-item img {
+        width: 90px;
+        height: 90px;
+    }
+}
+
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 600px) {
+
+    .explore-menu {
+        gap: 15px;
+    }
+
+    .explore-menu h1 {
+        font-size: 26px;
+    }
+
+    .explore-menu-text {
+        max-width: 100%;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .explore-menu-list {
+        gap: 20px;
+        padding-bottom: 12px;
+    }
+
+    .explore-menu-list-item {
+        min-width: 85px;
+        gap: 9px;
+    }
+
+    .explore-menu-list-item img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .explore-menu-list-item p {
+        font-size: 14px;
+    }
+}
+
+
+/* =========================
+   SMALL MOBILE
+   ========================= */
+
+@media (max-width: 400px) {
+
+    .explore-menu-list {
+        gap: 16px;
+    }
+
+    .explore-menu-list-item {
+        min-width: 75px;
+    }
+
+    .explore-menu-list-item img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .explore-menu-list-item p {
+        font-size: 13px;
+    }
+}
