@@ -1,26 +1,58 @@
-import React from 'react';
-import './header.css';
+import React from "react";
+
+import "./header.css";
 
 const Header = () => {
+
+    const scrollToMenu = () => {
+
+        const menuSection =
+            document.getElementById("explore-menu");
+
+        if (menuSection) {
+
+            menuSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        }
+
+    };
+
+
     return (
-        <div className="header">
+
+        <section className="header">
 
             <div className="header-contents">
 
-                <h2>Order your favourite food</h2>
+                <h2>
+                    Order your favourite food
+                </h2>
+
 
                 <p>
-                    Welcome to the world's biggest food lovers menu.
-                    Order the food you like with fast delivery,
-                    more coupons and rewards.
+                    Discover delicious food from
+                    our menu and order your
+                    favourite meals quickly and
+                    easily.
                 </p>
 
-                <button>View Menu</button>
+
+                <button
+                    type="button"
+                    onClick={scrollToMenu}
+                >
+                    View Menu
+                </button>
 
             </div>
 
-        </div>
+        </section>
+
     );
+
 };
 
 export default Header;

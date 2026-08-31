@@ -1,79 +1,114 @@
-/* ========================================
+/* =========================================
    GLOBAL RESET
-======================================== */
+========================================= */
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: outfit;
+}
+
+html {
     scroll-behavior: smooth;
 }
 
-
-/* ========================================
-   HTML / BODY
-======================================== */
-
-html,
 body {
-    width: 100%;
-    min-height: 100%;
-}
+    margin: 0;
 
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    color: #262626;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
     background: #ffffff;
+
+    color: #222222;
+
+    overflow-x: hidden;
 }
 
-
-/* ========================================
-   ROOT
-======================================== */
-
-#root {
-    width: 100%;
-    min-height: 100vh;
+button,
+input,
+textarea,
+select {
+    font-family: inherit;
 }
 
+button {
+    cursor: pointer;
+}
 
-/* ========================================
-   LINKS
-======================================== */
+img {
+    max-width: 100%;
+    display: block;
+}
 
 a {
     text-decoration: none;
     color: inherit;
 }
 
-
-/* ========================================
-   BUTTON / INPUT
-======================================== */
-
-button,
-input {
-    font-family: inherit;
+ul {
+    list-style: none;
 }
 
 
-/* ========================================
+/* =========================================
    APP
-======================================== */
+========================================= */
 
-.app {
+#root {
     width: 100%;
+    min-height: 100vh;
+}
+
+.app-content {
+    width: 100%;
+    min-height: 60vh;
 }
 
 
-/* ========================================
-   HOME / CART
-======================================== */
+/* =========================================
+   COMMON
+========================================= */
 
-.home,
-.cart {
-    width: 90%;
+.container {
+    width: 92%;
     max-width: 1400px;
     margin: 0 auto;
+}
+
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ff4d4d;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #e63c3c;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+    body {
+        overflow-x: hidden;
+    }
+
 }

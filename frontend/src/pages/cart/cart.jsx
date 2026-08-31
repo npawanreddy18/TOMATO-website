@@ -1,131 +1,339 @@
-import React, { useContext } from 'react';
-import './cart.css';
-import { StoreContext } from '../../context/StoreContext';
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
+import {
+    StoreContext
+} from "../../context/StoreContext";
+
+import "./cart.css";
+
 
 const Cart = () => {
 
+    const navigate = useNavigate();
+
     const {
-        cartItems,
         food_list,
+        cartItems,
         addToCart,
-        removeFromCart,
-        removeItem
+        removeFromCart
     } = useContext(StoreContext);
+
+
+    /* =========================================
+       CART ITEMS
+    ========================================= */
+
+    const cartData = food_list.filter(
+        (item) => cartItems[item._id] > 0
+    );
+
+
+    /* =========================================
+       SUBTOTAL
+    ========================================= */
+
+    const subtotal = cartData.reduce(
+        (total, item) => {
+
+            const quantity =
+                cartItems[item._id] || 0;
+
+            return (
+                total +
+                Number(item.price) * quantity
+            );
+
+        },
+        0
+    );
+
+
+    /* =========================================
+       DELIVERY FEE
+    ========================================= */
+
+    const deliveryFee =
+        subtotal === 0
+            ? 0
+            : subtotal >= 50
+                ? 0
+                : 2.99;
+
+
+    /* =========================================
+       TOTAL
+    ========================================= */
+
+    const total =
+        subtotal + deliveryFee;
+
+
+    /* =========================================
+       REMOVE ENTIRE ITEM
+    ========================================= */
+
+    const removeEntireItem = (id) => {
+
+        const quantity =
+            cartItems[id] || 0;
+
+        for (
+            let i = 0;
+            i < quantity;
+            i++
+        ) {
+
+            removeFromCart(id);
+
+        }
+
+    };
+
+
+    /* =========================================
+       PROCEED TO CHECKOUT
+    ========================================= */
+
+    const handleCheckout = () => {
+
+        if (cartData.length === 0) {
+            return;
+        }
+
+        navigate("/order");
+
+    };
+
+
+    /* =========================================
+       EMPTY CART
+    ========================================= */
+
+    if (cartData.length === 0) {
+
+        return (
+
+            <main className="cart-page">
+
+                <div className="empty-cart">
+
+                    <div className="empty-cart-icon">
+                        🛒
+                    </div>
+
+                    <h2>
+                        Your cart is empty
+                    </h2>
+
+                    <p>
+                        Looks like you haven't
+                        added anything to your
+                        cart yet.
+                    </p>
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            navigate("/")
+                        }
+                    >
+                        Browse Food
+                    </button>
+
+                </div>
+
+            </main>
+
+        );
+
+    }
 
 
     return (
 
-        <div className="cart">
+        <main className="cart-page">
 
-            <div className="cart-items">
+            <div className="cart">
 
                 {/* =================================
-                    CART HEADER
+                    TITLE
                 ================================= */}
 
-                <div className="cart-items-title">
+                <div className="cart-heading">
 
-                    <p>Items</p>
+                    <h1>
+                        Your Cart
+                    </h1>
 
-                    <p>Title</p>
-
-                    <p>Price</p>
-
-                    <p>Quantity</p>
-
-                    <p>Total</p>
-
-                    <p>Remove</p>
+                    <p>
+                        Review your items before
+                        placing your order.
+                    </p>
 
                 </div>
 
 
                 {/* =================================
-                    CART PRODUCTS
+                    CART TABLE
                 ================================= */}
 
-                {food_list.map((item) => {
+                <div className="cart-items">
 
-                    if (cartItems[item._id] > 0) {
+                    {/* DESKTOP HEADER */}
+
+                    <div className="cart-items-title">
+
+                        <p>Items</p>
+                        <p>Title</p>
+                        <p>Price</p>
+                        <p>Quantity</p>
+                        <p>Total</p>
+                        <p>Action</p>
+
+                    </div>
+
+
+                    {/* CART ROWS */}
+
+                    {cartData.map((item) => {
+
+                        const quantity =
+                            cartItems[item._id];
+
+                        const itemTotal =
+                            Number(item.price) *
+                            quantity;
+
 
                         return (
 
                             <div
+                                className="cart-item"
                                 key={item._id}
-                                className="cart-items-title-item"
                             >
 
-                                {/* FOOD IMAGE */}
+                                {/* IMAGE */}
 
-                                <img
-                                    src={item.image}
-                                    alt={item.name}
-                                />
+                                <div className="cart-item-image">
+
+                                    <img
+                                        src={item.image}
+                                        alt={item.name}
+                                    />
+
+                                </div>
 
 
-                                {/* FOOD NAME */}
+                                {/* TITLE */}
 
-                                <p className="cart-item-name">
-                                    {item.name}
-                                </p>
+                                <div className="cart-item-name">
+
+                                    <h3>
+                                        {item.name}
+                                    </h3>
+
+                                    <p>
+                                        {item.description}
+                                    </p>
+
+                                </div>
 
 
                                 {/* PRICE */}
 
-                                <p className="cart-item-price">
-                                    ${item.price}
-                                </p>
+                                <div className="cart-item-price">
+
+                                    <span className="mobile-label">
+                                        Price
+                                    </span>
+
+                                    <strong>
+                                        $
+                                        {Number(
+                                            item.price
+                                        ).toFixed(2)}
+                                    </strong>
+
+                                </div>
 
 
                                 {/* QUANTITY */}
 
-                                <div className="quantity-control">
+                                <div className="cart-item-quantity">
 
-                                    <button
-                                        className="quantity-btn"
-                                        onClick={() =>
-                                            removeFromCart(item._id)
-                                        }
-                                    >
-                                        −
-                                    </button>
-
-
-                                    <span className="quantity-number">
-                                        {cartItems[item._id]}
+                                    <span className="mobile-label">
+                                        Quantity
                                     </span>
 
 
-                                    <button
-                                        className="quantity-btn"
-                                        onClick={() =>
-                                            addToCart(item._id)
-                                        }
-                                    >
-                                        +
-                                    </button>
+                                    <div className="quantity-control">
+
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                removeFromCart(
+                                                    item._id
+                                                )
+                                            }
+                                            aria-label={
+                                                `Decrease ${item.name}`
+                                            }
+                                        >
+                                            −
+                                        </button>
+
+
+                                        <span className="quantity-number">
+                                            {quantity}
+                                        </span>
+
+
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                addToCart(
+                                                    item._id
+                                                )
+                                            }
+                                            aria-label={
+                                                `Increase ${item.name}`
+                                            }
+                                        >
+                                            +
+                                        </button>
+
+                                    </div>
 
                                 </div>
 
 
                                 {/* TOTAL */}
 
-                                <p className="cart-item-total">
+                                <div className="cart-item-total">
 
-                                    $
-                                    {item.price *
-                                        cartItems[item._id]}
+                                    <span className="mobile-label">
+                                        Total
+                                    </span>
 
-                                </p>
+                                    <strong>
+                                        $
+                                        {itemTotal.toFixed(2)}
+                                    </strong>
+
+                                </div>
 
 
                                 {/* REMOVE */}
 
-                                <div className="cart-action">
+                                <div className="cart-item-action">
 
                                     <button
+                                        type="button"
                                         onClick={() =>
-                                            removeItem(item._id)
+                                            removeEntireItem(
+                                                item._id
+                                            )
                                         }
                                     >
                                         Remove
@@ -137,18 +345,134 @@ const Cart = () => {
 
                         );
 
-                    }
+                    })}
 
-                    return null;
+                </div>
 
-                })}
+
+                {/* =================================
+                    BOTTOM SECTION
+                ================================= */}
+
+                <div className="cart-bottom">
+
+                    {/* CART TOTAL */}
+
+                    <div className="cart-total">
+
+                        <h2>
+                            Cart Totals
+                        </h2>
+
+
+                        <div className="cart-total-details">
+
+                            <p>
+                                Subtotal
+                            </p>
+
+                            <p>
+                                $
+                                {subtotal.toFixed(2)}
+                            </p>
+
+                        </div>
+
+
+                        <div className="cart-total-details">
+
+                            <p>
+                                Delivery Fee
+                            </p>
+
+                            <p>
+                                {deliveryFee === 0
+                                    ? "FREE"
+                                    : `$${deliveryFee.toFixed(2)}`}
+                            </p>
+
+                        </div>
+
+
+                        {subtotal > 0 &&
+                            subtotal < 50 && (
+
+                            <p className="delivery-message">
+
+                                Add $
+                                {(50 - subtotal).toFixed(2)}
+                                {" "}
+                                more for free delivery.
+
+                            </p>
+
+                        )}
+
+
+                        <div className="cart-total-details cart-grand-total">
+
+                            <b>
+                                Total
+                            </b>
+
+                            <b>
+                                $
+                                {total.toFixed(2)}
+                            </b>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            className="checkout-button"
+                            onClick={handleCheckout}
+                        >
+                            Proceed to Checkout
+                        </button>
+
+                    </div>
+
+
+                    {/* PROMO */}
+
+                    <div className="cart-promo">
+
+                        <p>
+                            Have a promo code?
+                        </p>
+
+                        <div className="promo-box">
+
+                            <input
+                                type="text"
+                                placeholder="Promo code"
+                            />
+
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    alert(
+                                        "Promo code feature will be connected to the backend later."
+                                    )
+                                }
+                            >
+                                Apply
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
-        </div>
+        </main>
 
     );
 
 };
+
 
 export default Cart;

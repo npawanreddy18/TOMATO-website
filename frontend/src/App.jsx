@@ -1,29 +1,59 @@
-import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";
 
-import Navbar from './components/navbar/navbar';
-import Home from './pages/home/home';
-import Cart from './pages/cart/cart';
-import PlaceOrder from './pages/placeorder/placeorder';
-import Footer from './components/Footer/Footer';
-import LoginPopup from './components/LoginPopup/LoginPopup';
+import Navbar from "./components/navbar/navbar";
+import Footer from "./components/Footer/Footer";
+import LoginPopup from "./components/LoginPopup/LoginPopup";
+
+import Home from "./pages/home/home";
+import Cart from "./pages/cart/cart";
+import PlaceOrder from "./pages/placeorder/placeorder";
+
+import "./App.css";
 
 const App = () => {
 
-    const [showLogin,setShowLogin] = useState(false)
+    const [showLogin, setShowLogin] = useState(false);
+
     return (
         <>
-        {showLogin?<LoginPopup setShowLogin={setShowLogin} />:<></>}
-        <div className="app">
-            <Navbar setShowLogin={setShowLogin}/>
+            {showLogin && (
+                <LoginPopup
+                    setShowLogin={setShowLogin}
+                />
+            )}
 
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/order" element={<PlaceOrder />} />
-            </Routes>
-        </div>
-            <Footer/>
+            <Navbar
+                setShowLogin={setShowLogin}
+            />
+
+            <main className="app-content">
+                <Routes>
+
+                    <Route
+                        path="/"
+                        element={<Home />}
+                    />
+
+                    <Route
+                        path="/cart"
+                        element={<Cart />}
+                    />
+
+                    <Route
+                        path="/order"
+                        element={<PlaceOrder />}
+                    />
+
+                    <Route
+                        path="*"
+                        element={<Home />}
+                    />
+
+                </Routes>
+            </main>
+
+            <Footer />
         </>
     );
 };

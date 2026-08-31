@@ -1,12 +1,95 @@
-/* ========================================
-   HOME
-======================================== */
+/* =========================================
+   HOME PAGE
+========================================= */
 
 .home {
-    width: 90%;
-    max-width: 1400px;
+    width: 100%;
+    min-height: 100vh;
+}
 
-    margin: 0 auto;
 
-    display: block;
+/* =========================================
+   SECTION SPACING
+========================================= */
+
+.home > section {
+    scroll-margin-top: 90px;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.home .header {
+    margin-bottom: 55px;
+}
+
+
+/* =========================================
+   EXPLORE MENU
+========================================= */
+
+.home .explore-menu {
+    margin-bottom: 55px;
+}
+
+
+/* =========================================
+   FOOD DISPLAY
+========================================= */
+
+.home .food-display {
+    margin-bottom: 70px;
+}
+
+
+/* =========================================
+   APP DOWNLOAD
+========================================= */
+
+.home .app-download {
+    margin-top: 30px;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 800px) {
+
+    .home .header {
+        margin-bottom: 40px;
+    }
+
+    .home .explore-menu {
+        margin-bottom: 40px;
+    }
+
+    .home .food-display {
+        margin-bottom: 50px;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .home .header {
+        margin-bottom: 35px;
+    }
+
+    .home .explore-menu {
+        margin-bottom: 35px;
+    }
+
+    .home .food-display {
+        margin-bottom: 40px;
+    }
+
 }

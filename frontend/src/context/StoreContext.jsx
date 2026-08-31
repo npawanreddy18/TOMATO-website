@@ -1,114 +1,240 @@
-import { createContext, useEffect, useState } from 'react';
-import { food_list } from '../assets/assets';
+import {
+    createContext,
+    useEffect,
+    useMemo,
+    useState
+} from "react";
+
+import { food_list } from "../assets/assets";
 
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = ({ children }) => {
 
-    const [cartItems, setCartItems] = useState({});
+    /* =========================================
+       CART
+    ========================================= */
+
+    const [cartItems, setCartItems] = useState(() => {
+
+        try {
+
+            const savedCart =
+                localStorage.getItem("tomato-cart");
+
+            return savedCart
+                ? JSON.parse(savedCart)
+                : {};
+
+        } catch (error) {
+
+            console.error(
+                "Could not load cart:",
+                error
+            );
+
+            return {};
+
+        }
+
+    });
 
 
-    // =========================================
-    // ADD ITEM
-    // =========================================
+    /* =========================================
+       SEARCH
+    ========================================= */
+
+    const [searchTerm, setSearchTerm] =
+        useState("");
+
+
+    /* =========================================
+       SAVE CART
+    ========================================= */
+
+    useEffect(() => {
+
+        localStorage.setItem(
+            "tomato-cart",
+            JSON.stringify(cartItems)
+        );
+
+    }, [cartItems]);
+
+
+    /* =========================================
+       ADD ITEM
+    ========================================= */
 
     const addToCart = (itemId) => {
 
-        setCartItems((prev) => ({
-            ...prev,
-            [itemId]: prev[itemId]
-                ? prev[itemId] + 1
-                : 1
+        setCartItems((previous) => ({
+
+            ...previous,
+
+            [itemId]:
+                (previous[itemId] || 0) + 1
+
         }));
 
     };
 
 
-    // =========================================
-    // REMOVE ONE QUANTITY
-    // =========================================
+    /* =========================================
+       REMOVE ONE QUANTITY
+    ========================================= */
 
     const removeFromCart = (itemId) => {
 
-        setCartItems((prev) => {
+        setCartItems((previous) => {
 
-            const updatedCart = {
-                ...prev
+            const updated = {
+                ...previous
             };
 
-            if (updatedCart[itemId] > 1) {
+            if (!updated[itemId]) {
+                return updated;
+            }
 
-                updatedCart[itemId] -= 1;
+            updated[itemId] =
+                updated[itemId] - 1;
 
-            } else {
+            if (updated[itemId] <= 0) {
 
-                delete updatedCart[itemId];
+                delete updated[itemId];
 
             }
 
-            return updatedCart;
+            return updated;
 
         });
 
     };
 
 
-    // =========================================
-    // REMOVE COMPLETE ITEM
-    // =========================================
+    /* =========================================
+       REMOVE COMPLETE ITEM
+    ========================================= */
 
     const removeItem = (itemId) => {
 
-        setCartItems((prev) => {
+        setCartItems((previous) => {
 
-            const updatedCart = {
-                ...prev
+            const updated = {
+                ...previous
             };
 
-            delete updatedCart[itemId];
+            delete updated[itemId];
 
-            return updatedCart;
+            return updated;
 
         });
 
     };
 
 
-    // =========================================
-    // SHOW CART IN CONSOLE
-    // =========================================
+    /* =========================================
+       CLEAR CART
+    ========================================= */
 
-    useEffect(() => {
+    const clearCart = () => {
 
-        console.log('Cart:', cartItems);
+        setCartItems({});
+
+    };
+
+
+    /* =========================================
+       CART ITEM COUNT
+    ========================================= */
+
+    const cartCount = useMemo(() => {
+
+        return Object.values(cartItems).reduce(
+            (total, quantity) =>
+                total + Number(quantity),
+            0
+        );
 
     }, [cartItems]);
 
 
-    // =========================================
-    // CONTEXT VALUE
-    // =========================================
+    /* =========================================
+       SUBTOTAL
+    ========================================= */
+
+    const cartSubtotal = useMemo(() => {
+
+        return food_list.reduce(
+            (total, item) => {
+
+                const quantity =
+                    cartItems[item._id] || 0;
+
+                return (
+                    total +
+                    Number(item.price) *
+                    Number(quantity)
+                );
+
+            },
+            0
+        );
+
+    }, [cartItems]);
+
+
+    /* =========================================
+       DELIVERY FEE
+    ========================================= */
+
+    const deliveryFee =
+        cartSubtotal > 0 ? 2 : 0;
+
+
+    /* =========================================
+       TOTAL
+    ========================================= */
+
+    const cartTotal =
+        cartSubtotal + deliveryFee;
+
+
+    /* =========================================
+       CONTEXT VALUE
+    ========================================= */
 
     const contextValue = {
 
         food_list,
 
         cartItems,
-
         setCartItems,
 
         addToCart,
-
         removeFromCart,
+        removeItem,
+        clearCart,
 
-        removeItem
+        searchTerm,
+        setSearchTerm,
+
+        cartCount,
+
+        cartSubtotal,
+
+        deliveryFee,
+
+        cartTotal
 
     };
 
 
     return (
 
-        <StoreContext.Provider value={contextValue}>
+        <StoreContext.Provider
+            value={contextValue}
+        >
 
             {children}
 

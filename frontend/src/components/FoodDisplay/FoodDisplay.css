@@ -1,18 +1,300 @@
+/* =========================================
+   FOOD DISPLAY
+========================================= */
+
 .food-display {
-    margin-top: 30px;
+
+    width: 92%;
+
+    max-width: 1400px;
+
+    margin:
+        0 auto 70px;
+
+    scroll-margin-top: 90px;
 }
 
-.food-display h2 {
-    margin: 0;
-    font-size: max(2vw, 24px);
-    font-weight: 600;
-    color: #262626;
+
+/* =========================================
+   HEADING
+========================================= */
+
+.food-display-heading {
+
+    margin-bottom: 25px;
 }
+
+
+.food-display-heading h2 {
+
+    font-size: 32px;
+
+    line-height: 1.2;
+
+    color: #222;
+
+    font-weight: 700;
+}
+
+
+/* =========================================
+   FOOD GRID
+
+   IMPORTANT:
+   Fixed responsive grid prevents food items
+   from jumping around when searching.
+========================================= */
 
 .food-display-list {
+
     display: grid;
-    grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));
-    margin-top: 30px;
+
+    grid-template-columns:
+        repeat(
+            4,
+            minmax(0, 1fr)
+        );
+
     gap: 30px;
-    row-gap: 50px;
+
+    width: 100%;
+}
+
+
+/* =========================================
+   NO RESULTS
+========================================= */
+
+.no-food-found {
+
+    width: 100%;
+
+    min-height: 260px;
+
+    border:
+        1px solid #eeeeee;
+
+    border-radius: 18px;
+
+    background: #fafafa;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 30px;
+}
+
+
+.no-food-icon {
+
+    width: 65px;
+
+    height: 65px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 27px;
+
+    margin-bottom: 15px;
+
+    box-shadow:
+        0 8px 25px
+        rgba(0, 0, 0, 0.08);
+}
+
+
+.no-food-found h3 {
+
+    font-size: 22px;
+
+    color: #222;
+
+    margin-bottom: 8px;
+}
+
+
+.no-food-found p {
+
+    max-width: 450px;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    color: #777;
+}
+
+
+/* =========================================
+   LARGE DESKTOP
+========================================= */
+
+@media (min-width: 1400px) {
+
+    .food-display-list {
+
+        grid-template-columns:
+            repeat(
+                4,
+                minmax(0, 1fr)
+            );
+
+        gap: 35px;
+    }
+
+}
+
+
+/* =========================================
+   LAPTOP
+========================================= */
+
+@media (max-width: 1200px) {
+
+    .food-display {
+
+        width: 92%;
+    }
+
+
+    .food-display-list {
+
+        grid-template-columns:
+            repeat(
+                3,
+                minmax(0, 1fr)
+            );
+
+        gap: 25px;
+    }
+
+
+    .food-display-heading h2 {
+
+        font-size: 29px;
+    }
+
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 800px) {
+
+    .food-display {
+
+        width: 94%;
+
+        margin-bottom: 50px;
+    }
+
+
+    .food-display-list {
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+
+        gap: 20px;
+    }
+
+
+    .food-display-heading h2 {
+
+        font-size: 26px;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 520px) {
+
+    .food-display {
+
+        width: 94%;
+    }
+
+
+    .food-display-list {
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+
+        gap: 13px;
+    }
+
+
+    .food-display-heading {
+
+        margin-bottom: 18px;
+    }
+
+
+    .food-display-heading h2 {
+
+        font-size: 22px;
+
+        line-height: 1.3;
+    }
+
+
+    .no-food-found {
+
+        min-height: 220px;
+
+        padding: 20px;
+    }
+
+
+    .no-food-found h3 {
+
+        font-size: 19px;
+    }
+
+}
+
+
+/* =========================================
+   VERY SMALL MOBILE
+========================================= */
+
+@media (max-width: 350px) {
+
+    .food-display-list {
+
+        gap: 10px;
+    }
+
+
+    .food-display-heading h2 {
+
+        font-size: 20px;
+    }
+
 }

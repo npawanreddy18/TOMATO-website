@@ -1,58 +1,110 @@
-import React from 'react';
-import './exploremenu.css';
+import React from "react";
 
-import { menu_list } from '../../assets/assets';
+import {
+    menu_list
+} from "../../assets/assets";
 
-const ExploreMenu = ({ category, setCategory }) => {
+import "./exploremenu.css";
+
+
+const ExploreMenu = ({
+    category,
+    setCategory
+}) => {
+
+    const handleCategory = (menuName) => {
+
+        setCategory((previous) => {
+
+            if (previous === menuName) {
+
+                return "All";
+
+            }
+
+            return menuName;
+
+        });
+
+    };
+
 
     return (
-        <div className="explore-menu" id="explore-menu">
 
-            <h1>Explore Our Menu</h1>
+        <section
+            className="explore-menu"
+            id="explore-menu"
+        >
 
-            <p className="explore-menu-text">
-                This menu shows good food for good health.
-                View the items, choose what you love and enjoy!
-            </p>
+            <div className="explore-menu-heading">
 
-            <div className="explore-menu-list">
+                <h2>
+                    Explore our menu
+                </h2>
 
-                {menu_list.map((item, index) => {
-
-                    const isActive = category === item.menu_name;
-
-                    return (
-                        <div
-                            key={index}
-                            className="explore-menu-list-item"
-                            onClick={() => {
-                                setCategory(
-                                    isActive
-                                        ? 'All'
-                                        : item.menu_name
-                                );
-                            }}
-                        >
-
-                            <img
-                                className={isActive ? 'active' : ''}
-                                src={item.menu_image}
-                                alt={item.menu_name}
-                            />
-
-                            <p>{item.menu_name}</p>
-
-                        </div>
-                    );
-
-                })}
+                <p>
+                    Choose from a variety of
+                    delicious dishes and find
+                    something you love.
+                </p>
 
             </div>
 
-            <hr />
 
-        </div>
+            <div className="explore-menu-list">
+
+                {menu_list.map(
+                    (item, index) => (
+
+                        <button
+                            type="button"
+                            key={
+                                item.menu_name ||
+                                index
+                            }
+                            className={
+                                `explore-menu-item ${
+                                    category ===
+                                    item.menu_name
+                                        ? "active"
+                                        : ""
+                                }`
+                            }
+                            onClick={() =>
+                                handleCategory(
+                                    item.menu_name
+                                )
+                            }
+                        >
+
+                            <div className="explore-menu-image">
+
+                                <img
+                                    src={item.menu_image}
+                                    alt={
+                                        item.menu_name
+                                    }
+                                />
+
+                            </div>
+
+
+                            <p>
+                                {item.menu_name}
+                            </p>
+
+                        </button>
+
+                    )
+                )}
+
+            </div>
+
+        </section>
+
     );
+
 };
+
 
 export default ExploreMenu;

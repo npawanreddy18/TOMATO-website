@@ -1,45 +1,150 @@
-import React, { useContext } from 'react';
-import './FoodDisplay.css';
+import React, { useContext, useMemo } from "react";
 
-import { StoreContext } from '../../context/StoreContext';
-import FoodItem from '../FoodItem/FoodItem';
+import FoodItem from "../FoodItem/FoodItem";
 
-const FoodDisplay = ({ category }) => {
+import {
+    StoreContext
+} from "../../context/StoreContext";
 
-    const { food_list } = useContext(StoreContext);
+import "./FoodDisplay.css";
+
+
+const FoodDisplay = ({
+    category
+}) => {
+
+    const {
+        food_list,
+        searchTerm
+    } = useContext(StoreContext);
+
+
+    /* =========================================
+       FILTER FOOD
+    ========================================= */
+
+    const filteredFood = useMemo(() => {
+
+        const search =
+            searchTerm.trim().toLowerCase();
+
+
+        return food_list.filter((item) => {
+
+            /* CATEGORY FILTER */
+
+            const categoryMatch =
+                category === "All" ||
+                category === item.category;
+
+
+            /* SEARCH FILTER */
+
+            const searchMatch =
+                search === "" ||
+                item.name
+                    ?.toLowerCase()
+                    .includes(search) ||
+                item.description
+                    ?.toLowerCase()
+                    .includes(search) ||
+                item.category
+                    ?.toLowerCase()
+                    .includes(search);
+
+
+            return (
+                categoryMatch &&
+                searchMatch
+            );
+
+        });
+
+    }, [
+        food_list,
+        category,
+        searchTerm
+    ]);
+
 
     return (
-        <div className="food-display" id="food-display">
 
-            <h2>Top Dishes Near You</h2>
+        <section
+            className="food-display"
+            id="food-display"
+        >
 
-            <div className="food-display-list">
+            {/* =================================
+                TITLE
+            ================================= */}
 
-                {food_list.map((item) => {
+            <div className="food-display-heading">
 
-                    if (
-                        category === 'All' ||
-                        category === item.category
-                    ) {
-                        return (
-                            <FoodItem
-                                key={item._id}
-                                id={item._id}
-                                name={item.name}
-                                description={item.description}
-                                price={item.price}
-                                image={item.image}
-                            />
-                        );
-                    }
-
-                    return null;
-                })}
+                <h2>
+                    {searchTerm
+                        ? `Search results for "${searchTerm}"`
+                        : "Top dishes near you"}
+                </h2>
 
             </div>
 
-        </div>
+
+            {/* =================================
+                FOOD GRID
+            ================================= */}
+
+            {filteredFood.length > 0 ? (
+
+                <div className="food-display-list">
+
+                    {filteredFood.map((item) => (
+
+                        <FoodItem
+                            key={item._id}
+                            id={item._id}
+                            name={item.name}
+                            price={item.price}
+                            description={
+                                item.description
+                            }
+                            image={item.image}
+                        />
+
+                    ))}
+
+                </div>
+
+            ) : (
+
+                /* =================================
+                   NO RESULTS
+                ================================= */
+
+                <div className="no-food-found">
+
+                    <div className="no-food-icon">
+                        🔍
+                    </div>
+
+                    <h3>
+                        No food found
+                    </h3>
+
+                    <p>
+                        Try searching for another
+                        dish or choose a different
+                        category.
+                    </p>
+
+                </div>
+
+            )}
+
+        </section>
+
     );
+
 };
+
 
 export default FoodDisplay;

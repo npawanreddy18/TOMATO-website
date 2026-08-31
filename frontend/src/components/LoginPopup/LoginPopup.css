@@ -1,367 +1,401 @@
-/* ========================================
-   LOGIN POPUP OVERLAY
-======================================== */
+/* =========================================
+   LOGIN POPUP
+========================================= */
 
 .login-popup {
+
     position: fixed;
 
-    top: 0;
-    left: 0;
+    inset: 0;
 
     width: 100%;
-    height: 100vh;
+    height: 100%;
 
-    background: rgba(0, 0, 0, 0.55);
+    background:
+        rgba(0, 0, 0, 0.55);
+
+    z-index: 10000;
 
     display: flex;
-    align-items: center;
-    justify-content: center;
 
-    z-index: 9999;
+    align-items: center;
+
+    justify-content: center;
 
     padding: 20px;
 
-    animation: fadeIn 0.3s ease;
+    animation:
+        loginFade 0.2s ease;
 }
 
 
-/* ========================================
-   LOGIN POPUP CONTAINER
-======================================== */
+@keyframes loginFade {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+
+/* =========================================
+   CONTAINER
+========================================= */
 
 .login-popup-container {
-    width: 100%;
-    max-width: 420px;
 
-    background: #ffffff;
+    width: min(430px, 100%);
 
-    padding: 35px;
+    background: white;
 
-    border-radius: 15px;
+    border-radius: 20px;
 
-    border: 1px solid #eeeeee;
+    padding: 30px;
 
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    box-shadow:
+        0 25px 70px
+        rgba(0, 0, 0, 0.25);
 
-    display: flex;
-    flex-direction: column;
-
-    gap: 20px;
-
-    animation: popupAnimation 0.3s ease;
+    animation:
+        loginSlide 0.25s ease;
 }
 
 
-/* ========================================
+@keyframes loginSlide {
+
+    from {
+
+        transform:
+            translateY(-15px)
+            scale(0.98);
+
+        opacity: 0;
+
+    }
+
+    to {
+
+        transform:
+            translateY(0)
+            scale(1);
+
+        opacity: 1;
+
+    }
+
+}
+
+
+/* =========================================
    TITLE
-======================================== */
+========================================= */
 
 .login-popup-title {
+
     display: flex;
 
     align-items: center;
+
     justify-content: space-between;
 
-    margin-bottom: 5px;
+    margin-bottom: 25px;
 }
 
 
 .login-popup-title h2 {
-    margin: 0;
-
-    color: #333333;
 
     font-size: 28px;
 
-    font-weight: 600;
+    color: #222;
 
-    text-transform: capitalize;
+    margin: 0;
 }
 
 
-/* ========================================
-   CLOSE ICON
-======================================== */
+.login-popup-close {
 
-.login-popup-title img {
-    width: 22px;
-    height: 22px;
+    width: 35px;
 
-    object-fit: contain;
+    height: 35px;
 
-    cursor: pointer;
+    border: none;
 
-    transition: transform 0.2s ease;
+    background: #f5f5f5;
+
+    color: #444;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 17px;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
 }
 
 
-.login-popup-title img:hover {
-    transform: rotate(90deg) scale(1.1);
+.login-popup-close:hover {
+
+    background: #ff4d4d;
+
+    color: white;
 }
 
 
-/* ========================================
-   INPUTS
-======================================== */
+/* =========================================
+   FORM
+========================================= */
 
-.login-popup-inputs {
+.login-popup-form {
+
     display: flex;
 
     flex-direction: column;
 
     gap: 15px;
-
-    width: 100%;
 }
 
 
-.login-popup-inputs input {
+.login-popup-form > input[type="text"],
+.login-popup-form > input[type="email"],
+.login-popup-form > input[type="password"] {
+
     width: 100%;
 
     height: 50px;
 
-    padding: 0 15px;
+    border:
+        1px solid #dddddd;
 
-    border: 1px solid #dcdcdc;
-
-    border-radius: 7px;
+    border-radius: 9px;
 
     outline: none;
 
-    color: #333333;
+    padding:
+        0 14px;
 
-    background: #ffffff;
+    font-size: 14px;
 
-    font-size: 15px;
+    color: #222;
 
-    transition: border-color 0.3s ease,
-                box-shadow 0.3s ease;
+    background: white;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 
-.login-popup-inputs input::placeholder {
-    color: #999999;
+.login-popup-form > input:focus {
+
+    border-color: #ff4d4d;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(255, 77, 77, 0.08);
 }
 
 
-.login-popup-inputs input:focus {
-    border-color: tomato;
+.login-popup-form > input::placeholder {
 
-    box-shadow: 0 0 0 3px rgba(255, 99, 71, 0.1);
+    color: #999;
 }
 
 
-/* ========================================
-   LOGIN / SIGN UP BUTTON
-======================================== */
+/* =========================================
+   TERMS
+========================================= */
 
-.login-popup-container > button {
-    width: 100%;
+.terms-row {
 
-    height: 50px;
-
-    border: none;
-
-    border-radius: 7px;
-
-    background: tomato;
-
-    color: white;
-
-    font-size: 16px;
-
-    font-weight: 500;
-
-    cursor: pointer;
-
-    transition: all 0.3s ease;
-}
-
-
-.login-popup-container > button:hover {
-    background: #e94b2c;
-
-    transform: translateY(-1px);
-
-    box-shadow: 0 5px 15px rgba(255, 99, 71, 0.25);
-}
-
-
-/* ========================================
-   TERMS & CONDITIONS
-======================================== */
-
-.login-popup-condition {
     display: flex;
 
     align-items: flex-start;
 
-    gap: 10px;
+    gap: 9px;
 
-    width: 100%;
+    color: #666;
+
+    font-size: 13px;
+
+    line-height: 1.4;
 }
 
 
-.login-popup-condition input {
+.terms-row input {
+
     width: 16px;
+
     height: 16px;
 
-    margin-top: 2px;
+    margin-top: 1px;
 
-    accent-color: tomato;
-
-    cursor: pointer;
-
-    flex-shrink: 0;
+    accent-color: #ff4d4d;
 }
 
 
-.login-popup-condition p {
+/* =========================================
+   MESSAGE
+========================================= */
+
+.login-message {
+
     margin: 0;
 
-    color: #666666;
+    padding: 10px;
 
-    font-size: 12px;
+    border-radius: 8px;
 
-    line-height: 1.5;
+    background: #fff4f4;
+
+    color: #e33c3c;
+
+    font-size: 13px;
+
+    line-height: 1.4;
 }
 
 
-/* ========================================
-   LOGIN / SIGN UP SWITCH
-======================================== */
+/* =========================================
+   SUBMIT
+========================================= */
 
-.login-popup-container > p {
-    margin: 0;
+.login-submit {
+
+    width: 100%;
+
+    min-height: 50px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #ff4d4d;
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.login-submit:hover {
+
+    background: #ed3f3f;
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(255, 77, 77, 0.25);
+}
+
+
+.login-submit:active {
+
+    transform:
+        translateY(0);
+}
+
+
+/* =========================================
+   SWITCH
+========================================= */
+
+.login-popup-switch {
+
+    margin-top: 20px;
 
     text-align: center;
+}
 
-    color: #555555;
+
+.login-popup-switch p {
+
+    margin: 0;
+
+    color: #777;
 
     font-size: 14px;
 }
 
 
-.login-popup-container > p span {
-    margin-left: 5px;
+.login-popup-switch button {
 
-    color: tomato;
+    border: none;
 
-    font-weight: 600;
+    background: none;
+
+    color: #ff4d4d;
+
+    font-weight: 700;
+
+    padding: 0 0 0 5px;
 
     cursor: pointer;
-
-    transition: color 0.2s ease;
 }
 
 
-.login-popup-container > p span:hover {
-    color: #e84320;
+.login-popup-switch button:hover {
 
     text-decoration: underline;
 }
 
 
-/* ========================================
-   FADE ANIMATION
-======================================== */
+/* =========================================
+   MOBILE
+========================================= */
 
-@keyframes fadeIn {
-
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-
-}
-
-
-/* ========================================
-   POPUP ANIMATION
-======================================== */
-
-@keyframes popupAnimation {
-
-    from {
-        opacity: 0;
-        transform: translateY(-20px) scale(0.95);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-
-}
-
-
-/* ========================================
-   TABLET
-======================================== */
-
-@media (max-width: 600px) {
+@media (max-width: 500px) {
 
     .login-popup {
+
         padding: 15px;
     }
 
-    .login-popup-container {
-        max-width: 380px;
-
-        padding: 28px 25px;
-
-        border-radius: 12px;
-    }
-
-    .login-popup-title h2 {
-        font-size: 25px;
-    }
-
-}
-
-
-/* ========================================
-   MOBILE
-======================================== */
-
-@media (max-width: 400px) {
-
-    .login-popup {
-        padding: 10px;
-    }
 
     .login-popup-container {
-        padding: 25px 20px;
 
-        gap: 16px;
+        padding: 24px 20px;
+
+        border-radius: 17px;
     }
+
 
     .login-popup-title h2 {
-        font-size: 23px;
+
+        font-size: 24px;
     }
 
-    .login-popup-title img {
-        width: 19px;
-        height: 19px;
+
+    .login-popup-form {
+
+        gap: 12px;
     }
 
-    .login-popup-inputs input {
-        height: 46px;
 
-        font-size: 14px;
-    }
+    .login-popup-form > input[type="text"],
+    .login-popup-form > input[type="email"],
+    .login-popup-form > input[type="password"] {
 
-    .login-popup-container > button {
-        height: 46px;
-
-        font-size: 14px;
-    }
-
-    .login-popup-condition p {
-        font-size: 11px;
+        height: 47px;
     }
 
 }
