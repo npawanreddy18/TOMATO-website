@@ -1,6 +1,6 @@
 import dns from "dns";
-
-// =====================================================
+import helmet from "helmet"
+//=====================================================
 // DNS CONFIGURATION
 // =====================================================
 
@@ -40,7 +40,7 @@ dotenv.config();
 
 const app = express();
 
-const port = 4000;
+const port = process.env.PORT || 4000;
 
 
 // =====================================================
@@ -48,8 +48,14 @@ const port = 4000;
 // =====================================================
 
 app.use(cors());
-
 app.use(express.json());
+app.use(
+    helmet({
+        crossOriginResourcePolicy: {
+            policy: "cross-origin",
+        },
+    })
+);
 
 
 // =====================================================
@@ -132,31 +138,33 @@ const startServer = async () => {
         await connectDB();
 
         app.listen(
-            port,
-            () => {
+    port,
+    "0.0.0.0",
+    () => {
 
-                console.log(
-                    "========================================"
-                );
-
-                console.log(
-                    "Tomato backend server started"
-                );
-
-                console.log(
-                    `Server: http://localhost:${port}`
-                );
-
-                console.log(
-                    "Food API: http://localhost:4000/api/food/list"
-                );
-
-                console.log(
-                    "========================================"
-                );
-
-            }
+        console.log(
+            "========================================"
         );
+
+        console.log(
+            "Tomato backend server started"
+        );
+
+        console.log(
+            `Server: http://localhost:${port}`
+        );
+
+        console.log(
+            `Food API: http://localhost:${port}/api/food/list`
+        );
+
+        console.log(
+            "========================================"
+        );
+
+    }
+);
+
 
     } catch (error) {
 
