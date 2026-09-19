@@ -1,0 +1,194 @@
+/* =====================================================
+   NAVBAR
+===================================================== */
+
+.navbar {
+    position: fixed;
+
+    top: 0;
+    left: 240px;
+    right: 0;
+
+    height: 70px;
+
+    background: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 30px;
+
+    border-bottom: 1px solid #eeeeee;
+
+    z-index: 900;
+}
+
+/* =====================================================
+   TITLE
+===================================================== */
+
+.navbar-left h2 {
+    margin: 0;
+
+    font-size: 24px;
+
+    color: #ff573f;
+
+    white-space: nowrap;
+}
+
+/* =====================================================
+   RIGHT SIDE
+===================================================== */
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+
+    gap: 25px;
+}
+
+.notification {
+    font-size: 22px;
+
+    cursor: pointer;
+}
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+.admin-profile {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.profile-icon {
+    width: 44px;
+    height: 44px;
+
+    min-width: 44px;
+
+    background: #ff573f;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    font-weight: bold;
+
+    font-size: 18px;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+
+    line-height: 1.2;
+}
+
+.profile-info strong {
+    font-size: 14px;
+
+    color: #111;
+}
+
+.profile-info span {
+    font-size: 12px;
+
+    color: #777;
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 1000px) {
+
+    .navbar {
+        left: 210px;
+
+        padding: 0 20px;
+    }
+
+    .navbar-left h2 {
+        font-size: 21px;
+    }
+
+    .navbar-right {
+        gap: 18px;
+    }
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+
+    .navbar {
+        left: 78px;
+
+        height: 70px;
+
+        padding: 0 15px;
+    }
+
+    .navbar-left h2 {
+        font-size: 18px;
+    }
+
+    .navbar-right {
+        gap: 12px;
+    }
+
+    .notification {
+        font-size: 19px;
+    }
+
+    .profile-icon {
+        width: 40px;
+        height: 40px;
+
+        min-width: 40px;
+    }
+
+    .profile-info {
+        display: none;
+    }
+}
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 450px) {
+
+    .navbar {
+        left: 70px;
+
+        padding: 0 10px;
+    }
+
+    .navbar-left h2 {
+        font-size: 16px;
+    }
+
+    .notification {
+        font-size: 17px;
+    }
+
+    .profile-icon {
+        width: 36px;
+        height: 36px;
+
+        min-width: 36px;
+    }
+}

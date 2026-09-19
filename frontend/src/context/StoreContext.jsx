@@ -5,52 +5,77 @@ import {
     useState
 } from "react";
 
-import { food_list } from "../assets/assets";
-
 export const StoreContext = createContext(null);
+
+const API_URL = "http://localhost:4000";
+
+const defaultSettings = {
+    restaurantName: "Tomato",
+    email: "",
+    phone: "",
+    deliveryFee: 2,
+    minOrder: 0,
+    currency: "$",
+    notifications: true,
+    emailNotifications: true,
+    autoConfirm: false
+};
 
 const StoreContextProvider = ({ children }) => {
 
-    /* =========================================
-       CART
-    ========================================= */
+    // =====================================================
+    // CART
+    // =====================================================
 
     const [cartItems, setCartItems] = useState(() => {
-
         try {
-
             const savedCart =
                 localStorage.getItem("tomato-cart");
 
             return savedCart
                 ? JSON.parse(savedCart)
                 : {};
-
-        } catch (error) {
-
-            console.error(
-                "Could not load cart:",
-                error
-            );
-
+        } catch {
             return {};
-
         }
-
     });
 
 
-    /* =========================================
-       SEARCH
-    ========================================= */
+    // =====================================================
+    // FOOD
+    // =====================================================
+
+    const [food_list, setFoodList] = useState([]);
+
+    const [foodLoading, setFoodLoading] =
+        useState(true);
+
+    const [foodError, setFoodError] =
+        useState("");
+
+
+    // =====================================================
+    // SEARCH
+    // =====================================================
 
     const [searchTerm, setSearchTerm] =
         useState("");
 
 
-    /* =========================================
-       SAVE CART
-    ========================================= */
+    // =====================================================
+    // RESTAURANT SETTINGS
+    // =====================================================
+
+    const [settings, setSettings] =
+        useState(defaultSettings);
+
+    const [settingsLoading, setSettingsLoading] =
+        useState(true);
+
+
+    // =====================================================
+    // SAVE CART
+    // =====================================================
 
     useEffect(() => {
 
@@ -62,9 +87,149 @@ const StoreContextProvider = ({ children }) => {
     }, [cartItems]);
 
 
-    /* =========================================
-       ADD ITEM
-    ========================================= */
+    // =====================================================
+    // GET FOOD
+    // =====================================================
+
+    const fetchFood = async () => {
+
+        try {
+
+            setFoodLoading(true);
+            setFoodError("");
+
+            const response = await fetch(
+                `${API_URL}/api/food/list`
+            );
+
+            const data =
+                await response.json();
+
+            if (!response.ok || !data.success) {
+
+                throw new Error(
+                    data.message ||
+                    "Failed to load food"
+                );
+            }
+
+            setFoodList(
+                data.foods || []
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Food loading error:",
+                error
+            );
+
+            setFoodError(
+                error.message ||
+                "Unable to load food"
+            );
+
+        } finally {
+
+            setFoodLoading(false);
+        }
+    };
+
+
+    // =====================================================
+    // GET RESTAURANT SETTINGS
+    // =====================================================
+
+    const fetchSettings = async () => {
+
+        try {
+
+            setSettingsLoading(true);
+
+            const response = await fetch(
+                `${API_URL}/api/settings`
+            );
+
+            const data =
+                await response.json();
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                throw new Error(
+                    data.message ||
+                    "Failed to load settings"
+                );
+            }
+
+            const newSettings = {
+                ...defaultSettings,
+                ...data.settings
+            };
+
+            setSettings(newSettings);
+
+            localStorage.setItem(
+                "tomato-settings",
+                JSON.stringify(newSettings)
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Settings loading error:",
+                error
+            );
+
+            try {
+
+                const savedSettings =
+                    localStorage.getItem(
+                        "tomato-settings"
+                    );
+
+                if (savedSettings) {
+
+                    setSettings({
+                        ...defaultSettings,
+                        ...JSON.parse(
+                            savedSettings
+                        )
+                    });
+
+                }
+
+            } catch {
+
+                setSettings(
+                    defaultSettings
+                );
+            }
+
+        } finally {
+
+            setSettingsLoading(false);
+        }
+    };
+
+
+    // =====================================================
+    // LOAD FOOD + SETTINGS
+    // =====================================================
+
+    useEffect(() => {
+
+        fetchFood();
+        fetchSettings();
+
+    }, []);
+
+
+    // =====================================================
+    // ADD TO CART
+    // =====================================================
 
     const addToCart = (itemId) => {
 
@@ -76,66 +241,58 @@ const StoreContextProvider = ({ children }) => {
                 (previous[itemId] || 0) + 1
 
         }));
-
     };
 
 
-    /* =========================================
-       REMOVE ONE QUANTITY
-    ========================================= */
+    // =====================================================
+    // REMOVE ONE
+    // =====================================================
 
     const removeFromCart = (itemId) => {
 
         setCartItems((previous) => {
 
-            const updated = {
+            const next = {
                 ...previous
             };
 
-            if (!updated[itemId]) {
-                return updated;
+            if (!next[itemId]) {
+                return next;
             }
 
-            updated[itemId] =
-                updated[itemId] - 1;
+            next[itemId] -= 1;
 
-            if (updated[itemId] <= 0) {
-
-                delete updated[itemId];
-
+            if (next[itemId] <= 0) {
+                delete next[itemId];
             }
 
-            return updated;
-
+            return next;
         });
-
     };
 
 
-    /* =========================================
-       REMOVE COMPLETE ITEM
-    ========================================= */
+    // =====================================================
+    // REMOVE ENTIRE ITEM
+    // =====================================================
 
     const removeItem = (itemId) => {
 
         setCartItems((previous) => {
 
-            const updated = {
+            const next = {
                 ...previous
             };
 
-            delete updated[itemId];
+            delete next[itemId];
 
-            return updated;
-
+            return next;
         });
-
     };
 
 
-    /* =========================================
-       CLEAR CART
-    ========================================= */
+    // =====================================================
+    // CLEAR CART
+    // =====================================================
 
     const clearCart = () => {
 
@@ -144,13 +301,15 @@ const StoreContextProvider = ({ children }) => {
     };
 
 
-    /* =========================================
-       CART ITEM COUNT
-    ========================================= */
+    // =====================================================
+    // CART COUNT
+    // =====================================================
 
     const cartCount = useMemo(() => {
 
-        return Object.values(cartItems).reduce(
+        return Object.values(
+            cartItems
+        ).reduce(
             (total, quantity) =>
                 total + Number(quantity),
             0
@@ -159,9 +318,9 @@ const StoreContextProvider = ({ children }) => {
     }, [cartItems]);
 
 
-    /* =========================================
-       SUBTOTAL
-    ========================================= */
+    // =====================================================
+    // CART SUBTOTAL
+    // =====================================================
 
     const cartSubtotal = useMemo(() => {
 
@@ -181,33 +340,65 @@ const StoreContextProvider = ({ children }) => {
             0
         );
 
-    }, [cartItems]);
+    }, [food_list, cartItems]);
 
 
-    /* =========================================
-       DELIVERY FEE
-    ========================================= */
+    // =====================================================
+    // DELIVERY FEE FROM ADMIN SETTINGS
+    // =====================================================
 
-    const deliveryFee =
-        cartSubtotal > 0 ? 2 : 0;
+    const deliveryFee = useMemo(() => {
+
+        if (cartSubtotal <= 0) {
+            return 0;
+        }
+
+        return Number(
+            settings.deliveryFee
+        ) || 0;
+
+    }, [
+        cartSubtotal,
+        settings.deliveryFee
+    ]);
 
 
-    /* =========================================
-       TOTAL
-    ========================================= */
+    // =====================================================
+    // CART TOTAL
+    // =====================================================
 
-    const cartTotal =
-        cartSubtotal + deliveryFee;
+    const cartTotal = useMemo(() => {
+
+        return (
+            Number(cartSubtotal) +
+            Number(deliveryFee)
+        );
+
+    }, [
+        cartSubtotal,
+        deliveryFee
+    ]);
 
 
-    /* =========================================
-       CONTEXT VALUE
-    ========================================= */
+    // =====================================================
+    // MINIMUM ORDER
+    // =====================================================
+
+    const minimumOrder = Number(
+        settings.minOrder
+    ) || 0;
+
+    const minimumOrderReached =
+        cartSubtotal >= minimumOrder;
+
+
+    // =====================================================
+    // CONTEXT VALUE
+    // =====================================================
 
     const contextValue = {
 
-        food_list,
-
+        // Cart
         cartItems,
         setCartItems,
 
@@ -216,32 +407,46 @@ const StoreContextProvider = ({ children }) => {
         removeItem,
         clearCart,
 
+        cartCount,
+        cartSubtotal,
+        deliveryFee,
+        cartTotal,
+
+        // Food
+        food_list,
+        foodLoading,
+        foodError,
+        fetchFood,
+
+        // Search
         searchTerm,
         setSearchTerm,
 
-        cartCount,
+        // Settings
+        settings,
+        settingsLoading,
+        fetchSettings,
 
-        cartSubtotal,
+        // Individual settings
+        restaurantName:
+            settings.restaurantName,
 
-        deliveryFee,
+        currency:
+            settings.currency,
 
-        cartTotal
+        minimumOrder,
 
+        minimumOrderReached
     };
 
 
     return (
-
         <StoreContext.Provider
             value={contextValue}
         >
-
             {children}
-
         </StoreContext.Provider>
-
     );
-
 };
 
 export default StoreContextProvider;

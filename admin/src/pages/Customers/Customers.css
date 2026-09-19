@@ -1,0 +1,263 @@
+.customers-page {
+    width: 100%;
+    padding: 30px;
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.customers-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.customers-page h2 {
+    font-size: 28px;
+    margin: 0;
+    color: #222;
+}
+
+.customers-title p {
+    margin: 7px 0 0;
+    color: #777;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   CUSTOMER COUNT
+========================================= */
+
+.customer-count {
+    background: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+.customer-count span {
+    color: #777;
+    font-size: 13px;
+}
+
+.customer-count strong {
+    color: #ff573f;
+    font-size: 22px;
+}
+
+
+/* =========================================
+   CUSTOMERS BOX
+========================================= */
+
+.customers-box {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow-x: auto;
+}
+
+
+/* =========================================
+   HEADER + ROW
+========================================= */
+
+.customers-header,
+.customer-row {
+    min-width: 650px;
+
+    display: grid;
+
+    grid-template-columns:
+        0.5fr
+        1.3fr
+        2fr
+        1fr
+        1fr;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 16px;
+}
+
+.customers-header {
+    background: #f5f5f5;
+    font-weight: bold;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.customer-row {
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #444;
+}
+
+
+/* =========================================
+   CUSTOMER NAME
+========================================= */
+
+.customer-name {
+    font-weight: 600;
+    color: #222;
+}
+
+.customer-email {
+    color: #666;
+}
+
+
+/* =========================================
+   STATUS
+========================================= */
+
+.customer-active {
+    width: fit-content;
+
+    display: inline-block;
+
+    padding: 7px 12px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    background: #d9f7df;
+
+    color: #168b32;
+}
+
+
+/* =========================================
+   NO CUSTOMERS
+========================================= */
+
+.no-customers {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.no-customers > div {
+    font-size: 45px;
+    margin-bottom: 12px;
+}
+
+.no-customers h3 {
+    margin: 0 0 8px;
+    color: #333;
+}
+
+.no-customers p {
+    margin: 0;
+    color: #888;
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
+
+.customers-message {
+    margin-top: 20px;
+    background: white;
+    padding: 50px 20px;
+    border-radius: 12px;
+    text-align: center;
+    color: #777;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+.customers-error strong {
+    display: block;
+    color: #c62828;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.customers-error p {
+    margin: 0 0 20px;
+}
+
+.customers-error button {
+    border: none;
+    background: #ff573f;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.customers-error button:hover {
+    background: #e94a34;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 700px) {
+
+    .customers-page {
+        padding: 20px 15px;
+    }
+
+    .customers-title {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .customer-count {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .customers-box {
+        padding: 12px;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 450px) {
+
+    .customers-page {
+        padding: 15px 10px;
+    }
+
+    .customers-page h2 {
+        font-size: 23px;
+    }
+
+    .customers-title p {
+        font-size: 12px;
+    }
+
+    .customers-box {
+        padding: 8px;
+    }
+
+}

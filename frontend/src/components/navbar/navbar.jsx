@@ -38,14 +38,39 @@ const Navbar = ({ setShowLogin }) => {
         useState(false);
 
 
+    // =========================================
+    // LOGGED-IN USER
+    // =========================================
+
+    const [user, setUser] = useState(null);
+
+
     const location = useLocation();
 
     const navigate = useNavigate();
 
 
-    /* =========================================
-       CHANGE ACTIVE MENU
-    ========================================= */
+    // =========================================
+    // GET USER FROM LOCAL STORAGE
+    // =========================================
+
+    useEffect(() => {
+
+        const savedUser =
+            localStorage.getItem("user");
+
+        if (savedUser) {
+
+            setUser(JSON.parse(savedUser));
+
+        }
+
+    }, []);
+
+
+    // =========================================
+    // CHANGE ACTIVE MENU
+    // =========================================
 
     useEffect(() => {
 
@@ -70,9 +95,9 @@ const Navbar = ({ setShowLogin }) => {
     }, [location.pathname]);
 
 
-    /* =========================================
-       CLOSE MOBILE MENU
-    ========================================= */
+    // =========================================
+    // CLOSE MOBILE MENU
+    // =========================================
 
     const closeMobileMenu = () => {
 
@@ -81,9 +106,9 @@ const Navbar = ({ setShowLogin }) => {
     };
 
 
-    /* =========================================
-       GO TO HOME SECTION
-    ========================================= */
+    // =========================================
+    // GO TO HOME SECTION
+    // =========================================
 
     const goToSection = (
         sectionId,
@@ -102,9 +127,7 @@ const Navbar = ({ setShowLogin }) => {
             setTimeout(() => {
 
                 const section =
-                    document.getElementById(
-                        sectionId
-                    );
+                    document.getElementById(sectionId);
 
                 if (section) {
 
@@ -121,9 +144,7 @@ const Navbar = ({ setShowLogin }) => {
         else {
 
             const section =
-                document.getElementById(
-                    sectionId
-                );
+                document.getElementById(sectionId);
 
             if (section) {
 
@@ -139,9 +160,9 @@ const Navbar = ({ setShowLogin }) => {
     };
 
 
-    /* =========================================
-       SEARCH
-    ========================================= */
+    // =========================================
+    // SEARCH
+    // =========================================
 
     const handleSearch = (event) => {
 
@@ -160,9 +181,9 @@ const Navbar = ({ setShowLogin }) => {
     };
 
 
-    /* =========================================
-       SEARCH BUTTON
-    ========================================= */
+    // =========================================
+    // SEARCH BUTTON
+    // =========================================
 
     const openSearch = () => {
 
@@ -171,9 +192,9 @@ const Navbar = ({ setShowLogin }) => {
     };
 
 
-    /* =========================================
-       CLOSE SEARCH
-    ========================================= */
+    // =========================================
+    // CLOSE SEARCH
+    // =========================================
 
     const closeSearch = () => {
 
@@ -182,13 +203,26 @@ const Navbar = ({ setShowLogin }) => {
     };
 
 
-    /* =========================================
-       CLEAR SEARCH
-    ========================================= */
+    // =========================================
+    // CLEAR SEARCH
+    // =========================================
 
     const clearSearch = () => {
 
         setSearchTerm("");
+
+    };
+
+
+    // =========================================
+    // LOGOUT
+    // =========================================
+
+    const handleLogout = () => {
+
+        localStorage.removeItem("user");
+
+        setUser(null);
 
     };
 
@@ -202,6 +236,7 @@ const Navbar = ({ setShowLogin }) => {
             ===================================== */}
 
             <nav className="navbar">
+
 
                 {/* LOGO */}
 
@@ -235,6 +270,7 @@ const Navbar = ({ setShowLogin }) => {
                         }`
                     }
                 >
+
 
                     {/* HOME */}
 
@@ -349,9 +385,7 @@ const Navbar = ({ setShowLogin }) => {
                     >
 
                         <img
-                            src={
-                                assets.search_icon
-                            }
+                            src={assets.search_icon}
                             alt="Search"
                         />
 
@@ -370,9 +404,7 @@ const Navbar = ({ setShowLogin }) => {
                     >
 
                         <img
-                            src={
-                                assets.basket_icon
-                            }
+                            src={assets.basket_icon}
                             alt="Cart"
                         />
 
@@ -390,19 +422,41 @@ const Navbar = ({ setShowLogin }) => {
                     </Link>
 
 
-                    {/* SIGN IN */}
+                    {/* LOGIN / USER */}
 
-                    <button
-                        type="button"
-                        className="signin-button"
-                        onClick={() =>
-                            setShowLogin(true)
-                        }
-                    >
+                    {user ? (
 
-                        Sign in
+                        <div className="navbar-user">
 
-                    </button>
+                            <span>
+                                👤 {user.name}
+                            </span>
+
+                            <button
+                                type="button"
+                                className="logout-button"
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </button>
+
+                        </div>
+
+                    ) : (
+
+                        <button
+                            type="button"
+                            className="signin-button"
+                            onClick={() =>
+                                setShowLogin(true)
+                            }
+                        >
+
+                            Sign in
+
+                        </button>
+
+                    )}
 
 
                     {/* HAMBURGER */}
@@ -411,9 +465,7 @@ const Navbar = ({ setShowLogin }) => {
                         type="button"
                         className="hamburger"
                         aria-label="Open menu"
-                        aria-expanded={
-                            mobileMenu
-                        }
+                        aria-expanded={mobileMenu}
                         onClick={() =>
                             setMobileMenu(
                                 previous =>
@@ -452,9 +504,7 @@ const Navbar = ({ setShowLogin }) => {
                     >
 
                         <img
-                            src={
-                                assets.search_icon
-                            }
+                            src={assets.search_icon}
                             alt=""
                         />
 
@@ -462,9 +512,7 @@ const Navbar = ({ setShowLogin }) => {
                         <input
                             type="text"
                             value={searchTerm}
-                            onChange={
-                                handleSearch
-                            }
+                            onChange={handleSearch}
                             placeholder="Search food..."
                             autoFocus
                         />
@@ -475,9 +523,7 @@ const Navbar = ({ setShowLogin }) => {
                             <button
                                 type="button"
                                 className="clear-search"
-                                onClick={
-                                    clearSearch
-                                }
+                                onClick={clearSearch}
                                 aria-label="Clear search"
                             >
 
@@ -491,9 +537,7 @@ const Navbar = ({ setShowLogin }) => {
                         <button
                             type="button"
                             className="close-search"
-                            onClick={
-                                closeSearch
-                            }
+                            onClick={closeSearch}
                             aria-label="Close search"
                         >
 

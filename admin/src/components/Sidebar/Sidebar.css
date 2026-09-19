@@ -1,0 +1,323 @@
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.sidebar {
+    width: 240px;
+    height: 100vh;
+
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    background: #17183b;
+
+    padding: 25px 15px;
+
+    display: flex;
+    flex-direction: column;
+
+    z-index: 1000;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* =====================================================
+   LOGO
+===================================================== */
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 0 10px;
+}
+
+.sidebar-logo span {
+    font-size: 30px;
+}
+
+.sidebar-logo h2 {
+    margin: 0;
+
+    color: #ff4c24;
+    font-size: 27px;
+    white-space: nowrap;
+}
+
+.admin-label {
+    color: #9696ad;
+
+    font-size: 10px;
+    letter-spacing: 1.5px;
+
+    margin: 8px 10px 28px;
+
+    white-space: nowrap;
+}
+
+/* =====================================================
+   MENU
+===================================================== */
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.sidebar-menu button {
+    width: 100%;
+
+    border: none;
+    background: transparent;
+
+    color: #d8d8e5;
+
+    padding: 13px 14px;
+
+    border-radius: 7px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    transition: 0.2s;
+}
+
+.sidebar-menu button:hover {
+    background: #28294e;
+}
+
+.sidebar-menu button.active {
+    background: #ff4c24;
+    color: white;
+}
+
+.sidebar-menu button span {
+    width: 22px;
+
+    min-width: 22px;
+
+    text-align: center;
+
+    font-size: 17px;
+}
+
+/* =====================================================
+   BOTTOM
+===================================================== */
+
+.sidebar-bottom {
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+.admin-profile-box {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    background: #222348;
+
+    padding: 12px;
+
+    border-radius: 8px;
+
+    margin-bottom: 10px;
+}
+
+.admin-avatar {
+    width: 36px;
+    height: 36px;
+
+    min-width: 36px;
+
+    border-radius: 50%;
+
+    background: #ff4c24;
+
+    color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-weight: bold;
+}
+
+.admin-profile-box h4 {
+    color: white;
+
+    font-size: 12px;
+
+    margin: 0 0 3px;
+}
+
+.admin-profile-box p {
+    color: #9999b2;
+
+    font-size: 10px;
+
+    margin: 0;
+}
+
+.logout-button {
+    width: 100%;
+
+    border: none;
+
+    background: transparent;
+
+    color: #ccccd8;
+
+    padding: 12px;
+
+    border-radius: 7px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+}
+
+.logout-button:hover {
+    background: #28294e;
+    color: white;
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 1000px) {
+
+    .sidebar {
+        width: 210px;
+    }
+}
+
+/* =====================================================
+   MOBILE SIDEBAR
+===================================================== */
+
+@media (max-width: 700px) {
+
+    .sidebar {
+        width: 78px;
+
+        padding: 20px 8px;
+
+        align-items: center;
+    }
+
+    .sidebar-logo {
+        justify-content: center;
+        padding: 0;
+    }
+
+    .sidebar-logo span {
+        font-size: 28px;
+    }
+
+    .sidebar-logo h2 {
+        display: none;
+    }
+
+    .admin-label {
+        display: none;
+    }
+
+    .sidebar-menu {
+        width: 100%;
+        margin-top: 25px;
+    }
+
+    .sidebar-menu button {
+        width: 100%;
+
+        height: 52px;
+
+        padding: 10px;
+
+        justify-content: center;
+
+        gap: 0;
+
+        font-size: 0;
+    }
+
+    .sidebar-menu button span {
+        width: auto;
+        min-width: auto;
+
+        font-size: 20px;
+    }
+
+    .sidebar-bottom {
+        width: 100%;
+    }
+
+    .admin-profile-box {
+        justify-content: center;
+        padding: 10px;
+    }
+
+    .admin-profile-box > div:last-child {
+        display: none;
+    }
+
+    .admin-avatar {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+    }
+
+    .logout-button {
+        justify-content: center;
+
+        font-size: 0;
+
+        padding: 12px;
+    }
+
+    .logout-button span {
+        font-size: 18px;
+    }
+}
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 450px) {
+
+    .sidebar {
+        width: 70px;
+
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
+    .sidebar-menu button {
+        height: 48px;
+    }
+
+    .sidebar-menu button span {
+        font-size: 18px;
+    }
+}

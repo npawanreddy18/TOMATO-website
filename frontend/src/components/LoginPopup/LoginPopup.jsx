@@ -1,91 +1,224 @@
 import React, { useState } from "react";
-
 import "./LoginPopup.css";
 
 const LoginPopup = ({ setShowLogin }) => {
 
-    const [currentState, setCurrentState] =
-        useState("Login");
+    const [currentState, setCurrentState] = useState("Login");
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const [acceptedTerms, setAcceptedTerms] =
-        useState(false);
-
-    const [message, setMessage] =
-        useState("");
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
+    const [message, setMessage] = useState("");
+    const [loading, setLoading] = useState(false);
 
 
-    const handleSubmit = (event) => {
+    // =====================================================
+    // FORM SUBMIT
+    // =====================================================
+
+    const handleSubmit = async (event) => {
 
         event.preventDefault();
 
         setMessage("");
 
 
+        // =================================================
+        // FRONTEND VALIDATION
+        // =================================================
+
         if (currentState === "Sign Up" && !name.trim()) {
-
             setMessage("Please enter your name.");
-
             return;
         }
-
 
         if (!email.trim()) {
-
             setMessage("Please enter your email.");
-
             return;
         }
-
 
         if (!email.includes("@")) {
-
-            setMessage(
-                "Please enter a valid email address."
-            );
-
+            setMessage("Please enter a valid email address.");
             return;
         }
 
-
         if (password.length < 6) {
-
             setMessage(
                 "Password must contain at least 6 characters."
             );
-
             return;
         }
 
-
-        if (
-            currentState === "Sign Up" &&
-            !acceptedTerms
-        ) {
-
+        if (currentState === "Sign Up" && !acceptedTerms) {
             setMessage(
                 "Please accept the terms and conditions."
             );
-
             return;
         }
 
 
-        setMessage(
-            currentState === "Login"
-                ? "Login successful!"
-                : "Account created successfully!"
-        );
+        // =================================================
+        // START LOADING
+        // =================================================
+
+        setLoading(true);
 
 
-        setTimeout(() => {
+        try {
 
-            setShowLogin(false);
+            // =================================================
+            // SIGN UP
+            // =================================================
 
-        }, 1000);
+            if (currentState === "Sign Up") {
+
+                const response = await fetch(
+                    "http://localhost:4000/api/user/register",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            name: name,
+                            email: email,
+                            password: password
+                        })
+                    }
+                );
+
+
+                const data = await response.json();
+
+
+                if (data.success) {
+
+                    setMessage(
+                        "Account created successfully!"
+                    );
+
+
+                    // Clear form
+
+                    setName("");
+                    setEmail("");
+                    setPassword("");
+                    setAcceptedTerms(false);
+
+
+                    // Switch to Login after 1 second
+
+                    setTimeout(() => {
+
+                        setCurrentState("Login");
+                        setMessage("");
+
+                    }, 1000);
+
+                } else {
+
+                    setMessage(
+                        data.message ||
+                        "Registration failed."
+                    );
+
+                }
+
+            }
+
+
+            // =================================================
+            // LOGIN
+            // =================================================
+
+            else {
+
+                const response = await fetch(
+                    "http://localhost:4000/api/user/login",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            email: email,
+                            password: password
+                        })
+                    }
+                );
+
+
+                const data = await response.json();
+
+
+                if (data.success) {
+
+                    setMessage("Login successful!");
+
+
+                    // =================================================
+                    // SAVE USER
+                    // =================================================
+
+                    localStorage.setItem(
+                        "user",
+                        JSON.stringify(data.user)
+                    );
+
+
+                    // =================================================
+                    // SAVE JWT TOKEN
+                    // =================================================
+
+                    localStorage.setItem(
+                        "token",
+                        data.token
+                    );
+
+
+                    // =================================================
+                    // CLOSE POPUP
+                    // =================================================
+
+                    setTimeout(() => {
+
+                        setShowLogin(false);
+
+                    }, 1000);
+
+                } else {
+
+                    setMessage(
+                        data.message ||
+                        "Login failed."
+                    );
+
+                }
+
+            }
+
+        } catch (error) {
+
+            console.log(
+                "Frontend Error:",
+                error
+            );
+
+            setMessage(
+                "Unable to connect to the server."
+            );
+
+        } finally {
+
+            setLoading(false);
+
+        }
 
     };
 
@@ -104,14 +237,15 @@ const LoginPopup = ({ setShowLogin }) => {
                 }
             >
 
-                {/* HEADER */}
+                {/* =========================================
+                    HEADER
+                ========================================= */}
 
                 <div className="login-popup-title">
 
                     <h2>
                         {currentState}
                     </h2>
-
 
                     <button
                         type="button"
@@ -127,12 +261,16 @@ const LoginPopup = ({ setShowLogin }) => {
                 </div>
 
 
-                {/* FORM */}
+                {/* =========================================
+                    FORM
+                ========================================= */}
 
                 <form
                     className="login-popup-form"
                     onSubmit={handleSubmit}
                 >
+
+                    {/* NAME - SIGN UP ONLY */}
 
                     {currentState === "Sign Up" && (
 
@@ -141,38 +279,38 @@ const LoginPopup = ({ setShowLogin }) => {
                             placeholder="Your name"
                             value={name}
                             onChange={(event) =>
-                                setName(
-                                    event.target.value
-                                )
+                                setName(event.target.value)
                             }
                         />
 
                     )}
 
 
+                    {/* EMAIL */}
+
                     <input
                         type="email"
                         placeholder="Email address"
                         value={email}
                         onChange={(event) =>
-                            setEmail(
-                                event.target.value
-                            )
+                            setEmail(event.target.value)
                         }
                     />
 
+
+                    {/* PASSWORD */}
 
                     <input
                         type="password"
                         placeholder="Password"
                         value={password}
                         onChange={(event) =>
-                            setPassword(
-                                event.target.value
-                            )
+                            setPassword(event.target.value)
                         }
                     />
 
+
+                    {/* TERMS - SIGN UP ONLY */}
 
                     {currentState === "Sign Up" && (
 
@@ -198,6 +336,8 @@ const LoginPopup = ({ setShowLogin }) => {
                     )}
 
 
+                    {/* MESSAGE */}
+
                     {message && (
 
                         <p className="login-message">
@@ -207,21 +347,28 @@ const LoginPopup = ({ setShowLogin }) => {
                     )}
 
 
+                    {/* SUBMIT BUTTON */}
+
                     <button
                         type="submit"
                         className="login-submit"
+                        disabled={loading}
                     >
 
-                        {currentState === "Login"
-                            ? "Login"
-                            : "Create account"}
+                        {loading
+                            ? "Please wait..."
+                            : currentState === "Login"
+                                ? "Login"
+                                : "Create account"}
 
                     </button>
 
                 </form>
 
 
-                {/* SWITCH LOGIN / SIGN UP */}
+                {/* =========================================
+                    SWITCH LOGIN / SIGN UP
+                ========================================= */}
 
                 <div className="login-popup-switch">
 
@@ -234,16 +381,14 @@ const LoginPopup = ({ setShowLogin }) => {
                                 type="button"
                                 onClick={() => {
 
-                                    setCurrentState(
-                                        "Sign Up"
-                                    );
-
+                                    setCurrentState("Sign Up");
                                     setMessage("");
 
                                 }}
                             >
                                 Sign Up
                             </button>
+
                         </p>
 
                     ) : (
@@ -255,16 +400,14 @@ const LoginPopup = ({ setShowLogin }) => {
                                 type="button"
                                 onClick={() => {
 
-                                    setCurrentState(
-                                        "Login"
-                                    );
-
+                                    setCurrentState("Login");
                                     setMessage("");
 
                                 }}
                             >
                                 Login
                             </button>
+
                         </p>
 
                     )}

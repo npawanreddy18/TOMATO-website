@@ -1,0 +1,398 @@
+/* =====================================================
+   ADD FOOD PAGE
+===================================================== */
+
+.add-page {
+    width: 100%;
+    max-width: 1000px;
+
+    margin: 0 auto;
+}
+
+/* =====================================================
+   PAGE HEADER
+===================================================== */
+
+.add-page-header {
+    width: 100%;
+
+    margin-bottom: 25px;
+}
+
+.add-page-header h1 {
+    margin: 0 0 8px;
+
+    font-size: 32px;
+    font-weight: 700;
+
+    color: #222;
+}
+
+.add-page-header p {
+    margin: 0;
+
+    font-size: 17px;
+
+    color: #777;
+}
+
+/* =====================================================
+   FORM CARD
+===================================================== */
+
+.add {
+    width: 100%;
+
+    max-width: 900px;
+
+    background: #ffffff;
+
+    padding: 32px;
+
+    border-radius: 16px;
+
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+
+    margin: 0 auto;
+}
+
+.add form {
+    width: 100%;
+}
+
+/* =====================================================
+   FORM GROUP
+===================================================== */
+
+.form-group {
+    width: 100%;
+
+    margin-bottom: 22px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 9px;
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+    color: #222;
+}
+
+/* =====================================================
+   INPUTS
+===================================================== */
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+
+    min-width: 0;
+
+    padding: 14px 15px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background: #fff;
+
+    color: #222;
+
+    font-size: 16px;
+
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #ff573f;
+}
+
+.form-group textarea {
+    min-height: 125px;
+
+    height: 125px;
+
+    resize: vertical;
+}
+
+/* =====================================================
+   PRICE + CATEGORY
+===================================================== */
+
+.form-row {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
+    gap: 22px;
+}
+
+/* =====================================================
+   IMAGE UPLOAD
+===================================================== */
+
+.image-upload {
+    width: 100%;
+}
+
+.image-upload input[type="file"] {
+    width: 100%;
+
+    padding: 10px;
+
+    cursor: pointer;
+
+    background: #fafafa;
+
+    font-size: 15px;
+}
+
+.selected-image {
+    margin: 8px 0 0;
+
+    font-size: 14px;
+
+    color: #555;
+
+    overflow-wrap: anywhere;
+}
+
+/* =====================================================
+   AVAILABLE
+===================================================== */
+
+.available-row {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin: 5px 0 25px;
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+    flex-wrap: wrap;
+}
+
+/* =====================================================
+   SWITCH
+===================================================== */
+
+.switch {
+    position: relative;
+
+    display: inline-block;
+
+    width: 55px;
+
+    height: 30px;
+
+    min-width: 55px;
+
+    margin: 0;
+}
+
+.switch input {
+    opacity: 0;
+
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+
+    cursor: pointer;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background: #ccc;
+
+    border-radius: 30px;
+
+    transition: 0.3s;
+}
+
+.slider:before {
+    content: "";
+
+    position: absolute;
+
+    width: 22px;
+    height: 22px;
+
+    left: 4px;
+    top: 4px;
+
+    background: white;
+
+    border-radius: 50%;
+
+    transition: 0.3s;
+}
+
+.switch input:checked + .slider {
+    background: #ff573f;
+}
+
+.switch input:checked + .slider:before {
+    transform: translateX(25px);
+}
+
+/* =====================================================
+   BUTTON
+===================================================== */
+
+.add button {
+    width: 100%;
+
+    height: 50px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #ff573f;
+
+    color: white;
+
+    font-size: 17px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.add button:hover {
+    background: #ff4328;
+}
+
+.add button:disabled {
+    background: #aaa;
+
+    cursor: not-allowed;
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 900px) {
+
+    .add-page {
+        max-width: 100%;
+    }
+
+    .add {
+        max-width: 100%;
+
+        padding: 28px;
+    }
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+
+    .add-page-header {
+        margin-bottom: 18px;
+    }
+
+    .add-page-header h1 {
+        font-size: 27px;
+    }
+
+    .add-page-header p {
+        font-size: 15px;
+    }
+
+    .add {
+        padding: 20px;
+
+        border-radius: 12px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+
+        gap: 0;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        font-size: 16px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        font-size: 15px;
+
+        padding: 13px;
+    }
+
+    .form-group textarea {
+        height: 110px;
+
+        min-height: 110px;
+    }
+
+    .available-row {
+        font-size: 16px;
+    }
+}
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 450px) {
+
+    .add {
+        padding: 16px;
+    }
+
+    .add-page-header h1 {
+        font-size: 24px;
+    }
+
+    .add-page-header p {
+        font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        font-size: 14px;
+    }
+
+    .add button {
+        height: 48px;
+
+        font-size: 15px;
+    }
+}

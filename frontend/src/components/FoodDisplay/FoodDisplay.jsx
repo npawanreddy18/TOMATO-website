@@ -31,14 +31,29 @@ const FoodDisplay = ({
 
         return food_list.filter((item) => {
 
-            /* CATEGORY FILTER */
+            /* =================================
+               AVAILABLE FILTER
+               
+               Only show foods that are
+               available in the frontend.
+            ================================= */
+
+            const availableMatch =
+                item.available === true;
+
+
+            /* =================================
+               CATEGORY FILTER
+            ================================= */
 
             const categoryMatch =
                 category === "All" ||
                 category === item.category;
 
 
-            /* SEARCH FILTER */
+            /* =================================
+               SEARCH FILTER
+            ================================= */
 
             const searchMatch =
                 search === "" ||
@@ -54,6 +69,7 @@ const FoodDisplay = ({
 
 
             return (
+                availableMatch &&
                 categoryMatch &&
                 searchMatch
             );
@@ -108,6 +124,7 @@ const FoodDisplay = ({
                                 item.description
                             }
                             image={item.image}
+                            available={item.available}
                         />
 
                     ))}

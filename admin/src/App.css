@@ -1,0 +1,82 @@
+/* =====================================================
+   GLOBAL ADMIN LAYOUT
+===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+.admin-app {
+    width: 100%;
+    min-height: 100vh;
+    background: #f7f7f7;
+}
+
+/* =====================================================
+   MAIN AREA
+===================================================== */
+
+.admin-main {
+    min-height: 100vh;
+    margin-left: 240px;
+    width: calc(100% - 240px);
+    min-width: 0;
+}
+
+/* =====================================================
+   PAGE CONTENT
+===================================================== */
+
+.admin-content {
+    width: 100%;
+    min-width: 0;
+    padding: 100px 30px 40px;
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 1000px) {
+
+    .admin-main {
+        margin-left: 210px;
+        width: calc(100% - 210px);
+    }
+
+    .admin-content {
+        padding: 95px 22px 35px;
+    }
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+
+    .admin-main {
+        margin-left: 78px;
+        width: calc(100% - 78px);
+    }
+
+    .admin-content {
+        padding: 90px 15px 30px;
+    }
+}
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 450px) {
+
+    .admin-main {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+    }
+
+    .admin-content {
+        padding: 85px 10px 25px;
+    }
+}

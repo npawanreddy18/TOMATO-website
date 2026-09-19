@@ -16,62 +16,30 @@ const Cart = () => {
         food_list,
         cartItems,
         addToCart,
-        removeFromCart
+        removeFromCart,
+
+        cartSubtotal,
+        deliveryFee,
+        cartTotal,
+
+        currency,
+        minimumOrder,
+        minimumOrderReached
     } = useContext(StoreContext);
 
 
-    /* =========================================
-       CART ITEMS
-    ========================================= */
+    // =========================================
+    // CART ITEMS
+    // =========================================
 
     const cartData = food_list.filter(
         (item) => cartItems[item._id] > 0
     );
 
 
-    /* =========================================
-       SUBTOTAL
-    ========================================= */
-
-    const subtotal = cartData.reduce(
-        (total, item) => {
-
-            const quantity =
-                cartItems[item._id] || 0;
-
-            return (
-                total +
-                Number(item.price) * quantity
-            );
-
-        },
-        0
-    );
-
-
-    /* =========================================
-       DELIVERY FEE
-    ========================================= */
-
-    const deliveryFee =
-        subtotal === 0
-            ? 0
-            : subtotal >= 50
-                ? 0
-                : 2.99;
-
-
-    /* =========================================
-       TOTAL
-    ========================================= */
-
-    const total =
-        subtotal + deliveryFee;
-
-
-    /* =========================================
-       REMOVE ENTIRE ITEM
-    ========================================= */
+    // =========================================
+    // REMOVE ENTIRE ITEM
+    // =========================================
 
     const removeEntireItem = (id) => {
 
@@ -91,13 +59,20 @@ const Cart = () => {
     };
 
 
-    /* =========================================
-       PROCEED TO CHECKOUT
-    ========================================= */
+    // =========================================
+    // PROCEED TO CHECKOUT
+    // =========================================
 
     const handleCheckout = () => {
 
         if (cartData.length === 0) {
+            return;
+        }
+
+        if (
+            minimumOrder > 0 &&
+            !minimumOrderReached
+        ) {
             return;
         }
 
@@ -106,9 +81,9 @@ const Cart = () => {
     };
 
 
-    /* =========================================
-       EMPTY CART
-    ========================================= */
+    // =========================================
+    // EMPTY CART
+    // =========================================
 
     if (cartData.length === 0) {
 
@@ -156,9 +131,7 @@ const Cart = () => {
 
             <div className="cart">
 
-                {/* =================================
-                    TITLE
-                ================================= */}
+                {/* TITLE */}
 
                 <div className="cart-heading">
 
@@ -174,13 +147,9 @@ const Cart = () => {
                 </div>
 
 
-                {/* =================================
-                    CART TABLE
-                ================================= */}
+                {/* CART ITEMS */}
 
                 <div className="cart-items">
-
-                    {/* DESKTOP HEADER */}
 
                     <div className="cart-items-title">
 
@@ -193,8 +162,6 @@ const Cart = () => {
 
                     </div>
 
-
-                    {/* CART ROWS */}
 
                     {cartData.map((item) => {
 
@@ -225,7 +192,7 @@ const Cart = () => {
                                 </div>
 
 
-                                {/* TITLE */}
+                                {/* NAME */}
 
                                 <div className="cart-item-name">
 
@@ -249,7 +216,7 @@ const Cart = () => {
                                     </span>
 
                                     <strong>
-                                        $
+                                        {currency}
                                         {Number(
                                             item.price
                                         ).toFixed(2)}
@@ -266,7 +233,6 @@ const Cart = () => {
                                         Quantity
                                     </span>
 
-
                                     <div className="quantity-control">
 
                                         <button
@@ -276,18 +242,13 @@ const Cart = () => {
                                                     item._id
                                                 )
                                             }
-                                            aria-label={
-                                                `Decrease ${item.name}`
-                                            }
                                         >
                                             −
                                         </button>
 
-
                                         <span className="quantity-number">
                                             {quantity}
                                         </span>
-
 
                                         <button
                                             type="button"
@@ -295,9 +256,6 @@ const Cart = () => {
                                                 addToCart(
                                                     item._id
                                                 )
-                                            }
-                                            aria-label={
-                                                `Increase ${item.name}`
                                             }
                                         >
                                             +
@@ -317,7 +275,7 @@ const Cart = () => {
                                     </span>
 
                                     <strong>
-                                        $
+                                        {currency}
                                         {itemTotal.toFixed(2)}
                                     </strong>
 
@@ -350,9 +308,7 @@ const Cart = () => {
                 </div>
 
 
-                {/* =================================
-                    BOTTOM SECTION
-                ================================= */}
+                {/* BOTTOM */}
 
                 <div className="cart-bottom">
 
@@ -372,8 +328,10 @@ const Cart = () => {
                             </p>
 
                             <p>
-                                $
-                                {subtotal.toFixed(2)}
+                                {currency}
+                                {Number(
+                                    cartSubtotal
+                                ).toFixed(2)}
                             </p>
 
                         </div>
@@ -388,21 +346,33 @@ const Cart = () => {
                             <p>
                                 {deliveryFee === 0
                                     ? "FREE"
-                                    : `$${deliveryFee.toFixed(2)}`}
+                                    : `${currency}${Number(
+                                        deliveryFee
+                                    ).toFixed(2)}`}
                             </p>
 
                         </div>
 
 
-                        {subtotal > 0 &&
-                            subtotal < 50 && (
+                        {/* MINIMUM ORDER MESSAGE */}
+
+                        {minimumOrder > 0 &&
+                            !minimumOrderReached && (
 
                             <p className="delivery-message">
 
-                                Add $
-                                {(50 - subtotal).toFixed(2)}
-                                {" "}
-                                more for free delivery.
+                                Add{" "}
+                                {currency}
+                                {(
+                                    minimumOrder -
+                                    cartSubtotal
+                                ).toFixed(2)}
+
+                                {" "}more to reach the
+                                minimum order of{" "}
+
+                                {currency}
+                                {minimumOrder.toFixed(2)}.
 
                             </p>
 
@@ -416,8 +386,10 @@ const Cart = () => {
                             </b>
 
                             <b>
-                                $
-                                {total.toFixed(2)}
+                                {currency}
+                                {Number(
+                                    cartTotal
+                                ).toFixed(2)}
                             </b>
 
                         </div>
@@ -427,6 +399,10 @@ const Cart = () => {
                             type="button"
                             className="checkout-button"
                             onClick={handleCheckout}
+                            disabled={
+                                minimumOrder > 0 &&
+                                !minimumOrderReached
+                            }
                         >
                             Proceed to Checkout
                         </button>
@@ -471,7 +447,6 @@ const Cart = () => {
         </main>
 
     );
-
 };
 
 
