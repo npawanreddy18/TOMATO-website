@@ -13,6 +13,9 @@ import {
 import "./FoodItem.css";
 
 
+const API_URL = "https://tomato-backend-dgur.onrender.com";
+
+
 const FoodItem = ({
     id,
     name,
@@ -32,6 +35,68 @@ const FoodItem = ({
         cartItems[id] || 0;
 
 
+    // =====================================================
+    // FIX FOOD IMAGE URL
+    // =====================================================
+
+    const getImageUrl = (imageUrl) => {
+
+        if (!imageUrl) {
+            return "";
+        }
+
+        // Convert old localhost image URLs
+        if (
+            imageUrl.includes(
+                "http://localhost:4000"
+            )
+        ) {
+
+            return imageUrl.replace(
+                "http://localhost:4000",
+                API_URL
+            );
+
+        }
+
+
+        // If image is already a full URL,
+        // use it directly.
+
+        if (
+            imageUrl.startsWith("http://") ||
+            imageUrl.startsWith("https://")
+        ) {
+
+            return imageUrl;
+
+        }
+
+
+        // If image starts with /images
+        // attach Render backend URL.
+
+        if (
+            imageUrl.startsWith("/images")
+        ) {
+
+            return `${API_URL}${imageUrl}`;
+
+        }
+
+
+        // If database contains only
+        // the image filename.
+
+        return `${API_URL}/images/${imageUrl}`;
+
+    };
+
+
+    const foodImage =
+        getImageUrl(image);
+
+
     return (
 
         <article className="food-item">
@@ -44,13 +109,15 @@ const FoodItem = ({
 
                 <img
                     className="food-item-image"
-                    src={image}
+                    src={foodImage}
                     alt={name}
                     loading="lazy"
                 />
 
 
-                {/* ADD / QUANTITY CONTROL */}
+                {/* =================================
+                    ADD / QUANTITY CONTROL
+                ================================= */}
 
                 {quantity === 0 ? (
 
