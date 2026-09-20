@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./Login.css";
 
+const API_URL = "https://tomato-backend-dgur.onrender.com";
+
 function Login({ setIsLoggedIn }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -16,12 +18,14 @@ function Login({ setIsLoggedIn }) {
 
         try {
             const response = await fetch(
-                "http://localhost:4000/api/admin/login",
+                `${API_URL}/api/admin/login`,
                 {
                     method: "POST",
+
                     headers: {
                         "Content-Type": "application/json",
                     },
+
                     body: JSON.stringify({
                         email: email.trim(),
                         password: password,
@@ -36,6 +40,7 @@ function Login({ setIsLoggedIn }) {
             // =========================================
 
             if (response.ok && data.success) {
+
                 // Save JWT token
                 localStorage.setItem(
                     "adminToken",
@@ -48,14 +53,13 @@ function Login({ setIsLoggedIn }) {
                     JSON.stringify(data.admin || {})
                 );
 
-                // Also keep adminData for compatibility
+                // Keep adminData for compatibility
                 localStorage.setItem(
                     "adminData",
                     JSON.stringify(data.admin || {})
                 );
 
-                // IMPORTANT:
-                // Tell App.jsx that login was successful
+                // Tell App.jsx login was successful
                 setIsLoggedIn(true);
 
                 return;
@@ -66,38 +70,62 @@ function Login({ setIsLoggedIn }) {
             // =========================================
 
             setError(
-                data.message || "Invalid email or password"
+                data.message ||
+                "Invalid email or password"
             );
+
         } catch (error) {
-            console.error("Login error:", error);
+
+            console.error(
+                "Login error:",
+                error
+            );
 
             setError(
-                "Cannot connect to backend. Make sure backend is running."
+                "Cannot connect to backend. Please try again."
             );
+
         } finally {
+
             setLoading(false);
+
         }
     };
 
     return (
         <div className="login-page">
+
             <div className="login-box">
 
                 {/* LOGO */}
                 <div className="login-logo">
-                    <h1>Tomato</h1>
-                    <p>Food Delivery Admin</p>
+
+                    <h1>
+                        Tomato
+                    </h1>
+
+                    <p>
+                        Food Delivery Admin
+                    </p>
+
                 </div>
 
+
                 {/* TITLE */}
-                <h2>Admin Login</h2>
+                <h2>
+                    Admin Login
+                </h2>
+
 
                 {/* FORM */}
                 <form onSubmit={handleLogin}>
 
                     {/* EMAIL */}
                     <div className="login-input">
-                        <label>Email</label>
+
+                        <label>
+                            Email
+                        </label>
 
                         <input
                             type="email"
@@ -108,11 +136,16 @@ function Login({ setIsLoggedIn }) {
                             }
                             required
                         />
+
                     </div>
+
 
                     {/* PASSWORD */}
                     <div className="login-input">
-                        <label>Password</label>
+
+                        <label>
+                            Password
+                        </label>
 
                         <input
                             type="password"
@@ -123,7 +156,9 @@ function Login({ setIsLoggedIn }) {
                             }
                             required
                         />
+
                     </div>
+
 
                     {/* ERROR */}
                     {error && (
@@ -132,16 +167,20 @@ function Login({ setIsLoggedIn }) {
                         </p>
                     )}
 
+
                     {/* LOGIN BUTTON */}
                     <button
                         type="submit"
                         className="login-button"
                         disabled={loading}
                     >
-                        {loading ? "LOGIN..." : "LOGIN"}
+                        {loading
+                            ? "LOGIN..."
+                            : "LOGIN"}
                     </button>
 
                 </form>
+
 
                 {/* FOOTER */}
                 <p className="login-footer">
@@ -149,6 +188,7 @@ function Login({ setIsLoggedIn }) {
                 </p>
 
             </div>
+
         </div>
     );
 }
