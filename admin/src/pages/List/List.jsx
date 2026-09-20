@@ -3,6 +3,37 @@ import "./List.css";
 
 const API_URL = "http://localhost:4000";
 
+// =====================================================
+// IMAGE URL HELPER
+// =====================================================
+
+const getImageUrl = (image) => {
+    if (!image) {
+        return "";
+    }
+
+    // Already a complete URL
+    if (
+        image.startsWith("http://") ||
+        image.startsWith("https://")
+    ) {
+        return image;
+    }
+
+    // Already starts with /images/
+    if (image.startsWith("/images/")) {
+        return `${API_URL}${image}`;
+    }
+
+    // Starts with images/
+    if (image.startsWith("images/")) {
+        return `${API_URL}/${image}`;
+    }
+
+    // Only filename, for example food_1.png
+    return `${API_URL}/images/${image}`;
+};
+
 function List() {
     const [foods, setFoods] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -53,7 +84,7 @@ function List() {
     };
 
     // =====================================================
-    // LOAD FOODS WHEN PAGE OPENS
+    // LOAD FOODS
     // =====================================================
 
     useEffect(() => {
@@ -69,11 +100,14 @@ function List() {
 
         setName(food.name || "");
         setDescription(food.description || "");
+
         setPrice(
-            food.price !== undefined && food.price !== null
+            food.price !== undefined &&
+                food.price !== null
                 ? food.price
                 : ""
         );
+
         setCategory(food.category || "");
         setAvailable(food.available !== false);
         setImage(null);
@@ -100,10 +134,6 @@ function List() {
 
     const updateFood = async (e) => {
         e.preventDefault();
-
-        // -----------------------------
-        // VALIDATION
-        // -----------------------------
 
         if (!name.trim()) {
             alert("Please enter food name");
@@ -138,13 +168,8 @@ function List() {
         try {
             setSaving(true);
 
-            // -----------------------------
-            // GET ADMIN TOKEN
-            // -----------------------------
-
-            const token = localStorage.getItem(
-                "adminToken"
-            );
+            const token =
+                localStorage.getItem("adminToken");
 
             if (!token) {
                 alert(
@@ -156,8 +181,7 @@ function List() {
             let response;
 
             // =================================================
-            // IF USER SELECTED A NEW IMAGE
-            // USE FORMDATA
+            // NEW IMAGE SELECTED
             // =================================================
 
             if (image) {
@@ -208,8 +232,7 @@ function List() {
             }
 
             // =================================================
-            // IF USER DID NOT SELECT A NEW IMAGE
-            // USE JSON
+            // NO NEW IMAGE
             // =================================================
 
             else {
@@ -222,7 +245,8 @@ function List() {
                             "Content-Type":
                                 "application/json",
 
-                            Authorization: `Bearer ${token}`,
+                            Authorization:
+                                `Bearer ${token}`,
                         },
 
                         body: JSON.stringify({
@@ -241,20 +265,13 @@ function List() {
                 );
             }
 
-            // =================================================
-            // READ BACKEND RESPONSE
-            // =================================================
-
-            const data = await response.json();
+            const data =
+                await response.json();
 
             console.log(
                 "Update food response:",
                 data
             );
-
-            // =================================================
-            // ERROR FROM BACKEND
-            // =================================================
 
             if (
                 !response.ok ||
@@ -267,10 +284,6 @@ function List() {
 
                 return;
             }
-
-            // =================================================
-            // SUCCESS
-            // =================================================
 
             alert(
                 "Food updated successfully"
@@ -324,7 +337,8 @@ function List() {
                         "Content-Type":
                             "application/json",
 
-                        Authorization: `Bearer ${token}`,
+                        Authorization:
+                            `Bearer ${token}`,
                     },
 
                     body: JSON.stringify({
@@ -349,7 +363,6 @@ function List() {
                 return;
             }
 
-            // Update screen immediately
             setFoods(
                 (previousFoods) =>
                     previousFoods.map(
@@ -412,7 +425,8 @@ function List() {
                     method: "DELETE",
 
                     headers: {
-                        Authorization: `Bearer ${token}`,
+                        Authorization:
+                            `Bearer ${token}`,
                     },
                 }
             );
@@ -432,7 +446,6 @@ function List() {
                 return;
             }
 
-            // Remove from screen
             setFoods(
                 (previousFoods) =>
                     previousFoods.filter(
@@ -464,9 +477,7 @@ function List() {
     return (
         <div className="list-page">
 
-            {/* =================================================
-                HEADER
-            ================================================= */}
+            {/* HEADER */}
 
             <div className="list-header">
 
@@ -488,9 +499,7 @@ function List() {
 
             </div>
 
-            {/* =================================================
-                FOOD COUNT
-            ================================================= */}
+            {/* FOOD COUNT */}
 
             {!loading && !error && (
                 <div className="food-count">
@@ -506,9 +515,7 @@ function List() {
                 </div>
             )}
 
-            {/* =================================================
-                LOADING
-            ================================================= */}
+            {/* LOADING */}
 
             {loading && (
                 <div className="list-message">
@@ -522,9 +529,7 @@ function List() {
                 </div>
             )}
 
-            {/* =================================================
-                ERROR
-            ================================================= */}
+            {/* ERROR */}
 
             {!loading && error && (
                 <div className="list-message error-message">
@@ -548,13 +553,12 @@ function List() {
                 </div>
             )}
 
-            {/* =================================================
-                FOOD TABLE
-            ================================================= */}
+            {/* FOOD TABLE */}
 
             {!loading &&
                 !error &&
                 foods.length > 0 && (
+
                     <div className="food-table-container">
 
                         <table className="food-table">
@@ -595,6 +599,7 @@ function List() {
 
                                 {foods.map(
                                     (food) => (
+
                                         <tr
                                             key={
                                                 food._id
@@ -606,13 +611,25 @@ function List() {
                                             <td>
 
                                                 <img
-                                                    src={
+                                                    src={getImageUrl(
                                                         food.image
-                                                    }
+                                                    )}
                                                     alt={
                                                         food.name
                                                     }
                                                     className="food-list-image"
+
+                                                    onError={(
+                                                        e
+                                                    ) => {
+                                                        console.error(
+                                                            "Image failed:",
+                                                            food.image
+                                                        );
+
+                                                        e.currentTarget.style.display =
+                                                            "none";
+                                                    }}
                                                 />
 
                                             </td>
@@ -672,6 +689,7 @@ function List() {
                                                             ? "status-button available"
                                                             : "status-button unavailable"
                                                     }
+
                                                     onClick={() =>
                                                         changeAvailability(
                                                             food._id,
@@ -695,11 +713,13 @@ function List() {
 
                                                     <button
                                                         className="edit-button"
+
                                                         onClick={() =>
                                                             openEdit(
                                                                 food
                                                             )
                                                         }
+
                                                         title="Edit food"
                                                     >
                                                         ✏️
@@ -707,12 +727,14 @@ function List() {
 
                                                     <button
                                                         className="delete-button"
+
                                                         onClick={() =>
                                                             deleteFood(
                                                                 food._id,
                                                                 food.name
                                                             )
                                                         }
+
                                                         title="Delete food"
                                                     >
                                                         🗑️
@@ -723,6 +745,7 @@ function List() {
                                             </td>
 
                                         </tr>
+
                                     )
                                 )}
 
@@ -733,13 +756,12 @@ function List() {
                     </div>
                 )}
 
-            {/* =================================================
-                EMPTY
-            ================================================= */}
+            {/* EMPTY */}
 
             {!loading &&
                 !error &&
                 foods.length === 0 && (
+
                     <div className="list-message">
 
                         <div className="empty-icon">
@@ -758,11 +780,10 @@ function List() {
                     </div>
                 )}
 
-            {/* =================================================
-                EDIT MODAL
-            ================================================= */}
+            {/* EDIT MODAL */}
 
             {editingFood && (
+
                 <div className="edit-overlay">
 
                     <div className="edit-modal">
@@ -802,9 +823,7 @@ function List() {
                             }
                         >
 
-                            {/* =================================================
-                                IMAGE
-                            ================================================= */}
+                            {/* IMAGE */}
 
                             <div className="edit-image-section">
 
@@ -814,10 +833,19 @@ function List() {
                                             ? URL.createObjectURL(
                                                   image
                                               )
-                                            : editingFood.image
+                                            : getImageUrl(
+                                                  editingFood.image
+                                              )
                                     }
                                     alt={name}
                                     className="edit-food-image"
+
+                                    onError={(
+                                        e
+                                    ) => {
+                                        e.currentTarget.style.display =
+                                            "none";
+                                    }}
                                 />
 
                                 <label className="change-image-button">
@@ -827,6 +855,7 @@ function List() {
                                     <input
                                         type="file"
                                         accept="image/png,image/jpeg,image/jpg,image/webp"
+
                                         onChange={(
                                             e
                                         ) =>
@@ -843,9 +872,7 @@ function List() {
 
                             </div>
 
-                            {/* =================================================
-                                NAME
-                            ================================================= */}
+                            {/* NAME */}
 
                             <div className="edit-field">
 
@@ -855,9 +882,8 @@ function List() {
 
                                 <input
                                     type="text"
-                                    value={
-                                        name
-                                    }
+                                    value={name}
+
                                     onChange={(
                                         e
                                     ) =>
@@ -871,9 +897,7 @@ function List() {
 
                             </div>
 
-                            {/* =================================================
-                                DESCRIPTION
-                            ================================================= */}
+                            {/* DESCRIPTION */}
 
                             <div className="edit-field">
 
@@ -885,6 +909,7 @@ function List() {
                                     value={
                                         description
                                     }
+
                                     onChange={(
                                         e
                                     ) =>
@@ -898,13 +923,9 @@ function List() {
 
                             </div>
 
-                            {/* =================================================
-                                PRICE + CATEGORY
-                            ================================================= */}
+                            {/* PRICE + CATEGORY */}
 
                             <div className="edit-two-columns">
-
-                                {/* PRICE */}
 
                                 <div className="edit-field">
 
@@ -916,9 +937,11 @@ function List() {
                                         type="number"
                                         min="0"
                                         step="0.01"
+
                                         value={
                                             price
                                         }
+
                                         onChange={(
                                             e
                                         ) =>
@@ -932,8 +955,6 @@ function List() {
 
                                 </div>
 
-                                {/* CATEGORY */}
-
                                 <div className="edit-field">
 
                                     <label>
@@ -944,6 +965,7 @@ function List() {
                                         value={
                                             category
                                         }
+
                                         onChange={(
                                             e
                                         ) =>
@@ -1005,9 +1027,7 @@ function List() {
 
                             </div>
 
-                            {/* =================================================
-                                AVAILABILITY
-                            ================================================= */}
+                            {/* AVAILABILITY */}
 
                             <div className="edit-availability">
 
@@ -1029,9 +1049,11 @@ function List() {
 
                                     <input
                                         type="checkbox"
+
                                         checked={
                                             available
                                         }
+
                                         onChange={(
                                             e
                                         ) =>
@@ -1049,18 +1071,18 @@ function List() {
 
                             </div>
 
-                            {/* =================================================
-                                BUTTONS
-                            ================================================= */}
+                            {/* BUTTONS */}
 
                             <div className="edit-actions">
 
                                 <button
                                     type="button"
                                     className="edit-cancel"
+
                                     onClick={
                                         closeEdit
                                     }
+
                                     disabled={
                                         saving
                                     }
@@ -1071,6 +1093,7 @@ function List() {
                                 <button
                                     type="submit"
                                     className="edit-save"
+
                                     disabled={
                                         saving
                                     }
