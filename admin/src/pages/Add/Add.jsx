@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./Add.css";
 
+const API_URL = "https://tomato-backend-dgur.onrender.com";
+
 const Add = () => {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -38,8 +40,13 @@ const Add = () => {
 
             const token = localStorage.getItem("adminToken");
 
+            if (!token) {
+                alert("Admin login session expired. Please login again.");
+                return;
+            }
+
             const response = await fetch(
-                "http://localhost:4000/api/food/add",
+                `${API_URL}/api/food/add`,
                 {
                     method: "POST",
                     headers: {
@@ -71,9 +78,10 @@ const Add = () => {
                 alert(data.message || "Failed to add food.");
             }
         } catch (error) {
-            console.error(error);
+            console.error("Add food error:", error);
+
             alert(
-                "Unable to connect to backend. Make sure backend is running."
+                "Unable to connect to backend. Please try again."
             );
         } finally {
             setLoading(false);
@@ -193,7 +201,6 @@ const Add = () => {
                                 <option value="Burger">
                                     Burger
                                 </option>
-
                             </select>
                         </div>
 
@@ -211,9 +218,10 @@ const Add = () => {
                             type="file"
                             accept="image/png,image/jpeg,image/jpg,image/webp"
                             onChange={(event) => {
-                                setImage(
-                                    event.target.files[0]
-                                );
+                                const selectedFile =
+                                    event.target.files[0];
+
+                                setImage(selectedFile || null);
                             }}
                         />
 
