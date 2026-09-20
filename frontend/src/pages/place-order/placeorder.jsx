@@ -1,16 +1,9 @@
-import React, {
-    useContext,
-    useState
-} from "react";
-
+import React,{useContext,useState} from "react";
 import { useNavigate } from "react-router-dom";
-
-import {
-    StoreContext
-} from "../../context/StoreContext";
-
+import {StoreContext} from "../../context/StoreContext";
 import "./placeorder.css";
 
+const API_URL = "https://tomato-backend-dgur.onrender.com";
 
 const PlaceOrder = () => {
 
@@ -267,7 +260,7 @@ const PlaceOrder = () => {
 
             const response =
                 await fetch(
-                    "http://localhost:4000/api/order/place",
+                    `${API_URL}/api/order/place`,
                     {
 
                         method: "POST",
