@@ -8,7 +8,40 @@ import {
 import "./cart.css";
 
 
-const Cart = () => {
+const Cart = () => {const API_URL = "https://tomato-backend-dgur.onrender.com";
+
+const getImageUrl = (image) => {
+
+    if (!image) {
+        return "";
+    }
+
+    // Already a complete Render/backend URL
+    if (image.startsWith("https://")) {
+        return image;
+    }
+
+    // Old localhost URL
+    if (image.startsWith("http://localhost:4000")) {
+        return image.replace(
+            "http://localhost:4000",
+            API_URL
+        );
+    }
+
+    // Image already starts with /images
+    if (image.startsWith("/images/")) {
+        return `${API_URL}${image}`;
+    }
+
+    // Image starts with images/ but has no /
+    if (image.startsWith("images/")) {
+        return `${API_URL}/${image}`;
+    }
+
+    // Backend returned only the filename
+    return `${API_URL}/images/${image}`;
+};
 
     const navigate = useNavigate();
 
@@ -184,12 +217,20 @@ const Cart = () => {
 
                                 <div className="cart-item-image">
 
-                                    <img
-                                        src={item.image}
-                                        alt={item.name}
-                                    />
+    <img
+        src={getImageUrl(item.image)}
+        alt={item.name}
+        loading="lazy"
+        onError={(e) => {
+            console.error(
+                "Cart image failed:",
+                item.image
+            );
+            e.currentTarget.style.display = "none";
+        }}
+    />
 
-                                </div>
+</div>
 
 
                                 {/* NAME */}
