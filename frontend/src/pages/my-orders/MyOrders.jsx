@@ -1,9 +1,6 @@
-import React, {
-    useEffect,
-    useState
-} from "react";
-
+import React, {useEffect,useState} from "react";
 import "./MyOrders.css";
+
 
 
 const MyOrders = () => {
@@ -19,7 +16,7 @@ const MyOrders = () => {
 
 
     const url =
-        "http://localhost:4000";
+        "https://tomato-backend-dgur.onrender.com";
 
 
     // =========================================
