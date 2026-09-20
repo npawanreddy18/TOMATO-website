@@ -1,190 +1,329 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./Customers.css";
 
-const API_URL = "https://tomato-backend-dgur.onrender.com";
+const API_URL = "http://localhost:4000";
 
-const Customers = () => {
+function Customers() {
+
     const [customers, setCustomers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+
+    const [loading, setLoading] =
+        useState(true);
+
+    const [error, setError] =
+        useState("");
+
+
+    // =========================================
+    // FETCH CUSTOMERS
+    // =========================================
 
     const fetchCustomers = async () => {
+
         try {
+
             setLoading(true);
             setError("");
 
             const token =
-                localStorage.getItem("adminToken");
-
-            if (!token) {
-                setError(
-                    "Admin login session expired."
+                localStorage.getItem(
+                    "adminToken"
                 );
-                return;
+
+
+            const response =
+                await fetch(
+                    `${API_URL}/api/user/all`,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ${token}`
+                        }
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                throw new Error(
+                    data.message ||
+                    "Failed to load customers"
+                );
+
             }
 
-            const response = await fetch(
-                `${API_URL}/api/user/all`,
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
+
+            setCustomers(
+                data.customers || []
             );
 
-            const data = await response.json();
-
-            if (data.success) {
-                setCustomers(
-                    data.users ||
-                    data.data ||
-                    data.customers ||
-                    []
-                );
-            } else {
-                setError(
-                    data.message ||
-                    "Failed to load customers."
-                );
-            }
         } catch (error) {
+
             console.error(
                 "Customers error:",
                 error
             );
 
             setError(
-                "Unable to connect to backend."
+                error.message ||
+                "Unable to load customers"
             );
+
         } finally {
+
             setLoading(false);
+
         }
+
     };
 
+
+    // =========================================
+    // LOAD CUSTOMERS
+    // =========================================
+
     useEffect(() => {
+
         fetchCustomers();
+
     }, []);
 
-    return (
-        <div className="customers-page">
 
-            <div className="customers-page-header">
+    // =========================================
+    // LOADING
+    // =========================================
 
-                <div>
-                    <h1>Customers</h1>
-                    <p>
-                        View registered customers
-                    </p>
-                </div>
+    if (loading) {
 
-                <button
-                    className="refresh-btn"
-                    onClick={fetchCustomers}
-                >
-                    Refresh
-                </button>
+        return (
 
-            </div>
+            <div className="customers-page">
 
-            {loading && (
+                <h2>Customers</h2>
+
                 <div className="customers-message">
                     Loading customers...
                 </div>
-            )}
 
-            {!loading && error && (
-                <div className="customers-message error">
-                    {error}
+            </div>
+
+        );
+
+    }
+
+
+    // =========================================
+    // ERROR
+    // =========================================
+
+    if (error) {
+
+        return (
+
+            <div className="customers-page">
+
+                <h2>Customers</h2>
+
+                <div className="customers-message customers-error">
+
+                    <strong>
+                        Unable to load customers
+                    </strong>
+
+                    <p>
+                        {error}
+                    </p>
+
+                    <button
+                        type="button"
+                        onClick={
+                            fetchCustomers
+                        }
+                    >
+                        Try Again
+                    </button>
+
                 </div>
-            )}
 
-            {!loading &&
-                !error &&
-                customers.length === 0 && (
-                    <div className="customers-message">
-                        No customers found.
+            </div>
+
+        );
+
+    }
+
+
+    return (
+
+        <div className="customers-page">
+
+            {/* =================================
+                HEADER
+            ================================= */}
+
+            <div className="customers-title">
+
+                <div>
+
+                    <h2>
+                        Customers
+                    </h2>
+
+                    <p>
+                        Manage your registered customers
+                    </p>
+
+                </div>
+
+
+                <div className="customer-count">
+
+                    <span>
+                        Total Customers
+                    </span>
+
+                    <strong>
+                        {customers.length}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            {/* =================================
+                CUSTOMERS BOX
+            ================================= */}
+
+            <div className="customers-box">
+
+
+                {/* TABLE HEADER */}
+
+                <div className="customers-header">
+
+                    <span>
+                        #
+                    </span>
+
+                    <span>
+                        Name
+                    </span>
+
+                    <span>
+                        Email
+                    </span>
+
+                    <span>
+                        Orders
+                    </span>
+
+                    <span>
+                        Status
+                    </span>
+
+                </div>
+
+
+                {/* =================================
+                    NO CUSTOMERS
+                ================================= */}
+
+                {customers.length === 0 ? (
+
+                    <div className="no-customers">
+
+                        <div>
+                            👥
+                        </div>
+
+                        <h3>
+                            No customers found
+                        </h3>
+
+                        <p>
+                            Registered customers
+                            will appear here.
+                        </p>
+
                     </div>
+
+                ) : (
+
+                    customers.map(
+                        (customer, index) => (
+
+                            <div
+                                className="customer-row"
+                                key={
+                                    customer._id
+                                }
+                            >
+
+                                {/* NUMBER */}
+
+                                <span>
+                                    {index + 1}
+                                </span>
+
+
+                                {/* NAME */}
+
+                                <span className="customer-name">
+
+                                    {customer.name ||
+                                        "Unknown"}
+
+                                </span>
+
+
+                                {/* EMAIL */}
+
+                                <span className="customer-email">
+
+                                    {customer.email}
+
+                                </span>
+
+
+                                {/* ORDERS */}
+
+                                <span>
+
+                                    {customer.orders}
+
+                                </span>
+
+
+                                {/* STATUS */}
+
+                                <span>
+
+                                    <span className="customer-active">
+                                        Active
+                                    </span>
+
+                                </span>
+
+                            </div>
+
+                        )
+                    )
+
                 )}
 
-            {!loading &&
-                !error &&
-                customers.length > 0 && (
-
-                    <div className="customers-table-container">
-
-                        <table className="customers-table">
-
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Joined</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-
-                                {customers.map(
-                                    (
-                                        customer,
-                                        index
-                                    ) => (
-
-                                        <tr
-                                            key={
-                                                customer._id ||
-                                                index
-                                            }
-                                        >
-
-                                            <td>
-                                                {index + 1}
-                                            </td>
-
-                                            <td>
-                                                <strong>
-                                                    {customer.name ||
-                                                        customer.username ||
-                                                        "Customer"}
-                                                </strong>
-                                            </td>
-
-                                            <td>
-                                                {customer.email ||
-                                                    "N/A"}
-                                            </td>
-
-                                            <td>
-                                                {customer.phone ||
-                                                    customer.mobile ||
-                                                    "N/A"}
-                                            </td>
-
-                                            <td>
-                                                {customer.createdAt
-                                                    ? new Date(
-                                                        customer.createdAt
-                                                    ).toLocaleDateString()
-                                                    : "N/A"}
-                                            </td>
-
-                                        </tr>
-
-                                    )
-                                )}
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-                )}
+            </div>
 
         </div>
+
     );
-};
+
+}
 
 export default Customers;
