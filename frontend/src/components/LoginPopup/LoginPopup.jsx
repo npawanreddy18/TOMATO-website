@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./LoginPopup.css";
 
+const API_URL = "https://tomato-backend-dgur.onrender.com";
+
 const LoginPopup = ({ setShowLogin }) => {
 
     const [currentState, setCurrentState] = useState("Login");
@@ -75,7 +77,7 @@ const LoginPopup = ({ setShowLogin }) => {
             if (currentState === "Sign Up") {
 
                 const response = await fetch(
-                    "http://localhost:4000/api/user/register",
+                     `${API_URL}/api/user/register`,
                     {
                         method: "POST",
 
@@ -138,7 +140,7 @@ const LoginPopup = ({ setShowLogin }) => {
             else {
 
                 const response = await fetch(
-                    "http://localhost:4000/api/user/login",
+                    `${API_URL}/api/user/login`,
                     {
                         method: "POST",
 
