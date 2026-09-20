@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from "react";
+
 import "./Dashboard.css";
 
-const API_URL = "http://localhost:4000";
+
+// =====================================================
+// DEPLOYED BACKEND URL
+// =====================================================
+
+const API_URL = "https://tomato-backend-dgur.onrender.com";
+
 
 function Dashboard() {
+
     const [orders, setOrders] = useState([]);
     const [foods, setFoods] = useState([]);
     const [customers, setCustomers] = useState([]);
@@ -11,191 +19,368 @@ function Dashboard() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
-    // =========================================
+
+    // =====================================================
     // FETCH DASHBOARD DATA
-    // =========================================
+    // =====================================================
 
     const fetchDashboard = async () => {
+
         try {
+
             setLoading(true);
             setError("");
 
-            const token = localStorage.getItem("adminToken");
+
+            // =================================================
+            // GET ADMIN JWT TOKEN
+            // =================================================
+
+            const token =
+                localStorage.getItem("adminToken");
+
+
+            if (!token) {
+
+                throw new Error(
+                    "Admin login required."
+                );
+
+            }
+
+
+            // =================================================
+            // REQUEST HEADERS
+            // =================================================
 
             const headers = {
-                Authorization: `Bearer ${token}`,
+
+                "Authorization":
+                    `Bearer ${token}`
+
             };
+
+
+            // =================================================
+            // FETCH ALL DATA
+            // =================================================
 
             const [
                 ordersResponse,
                 foodsResponse,
-                customersResponse,
+                customersResponse
             ] = await Promise.all([
-                fetch(`${API_URL}/api/order/all-orders`, {
-                    headers,
-                }),
 
-                fetch(`${API_URL}/api/food/list`, {
-                    headers,
-                }),
+                fetch(
+                    `${API_URL}/api/order/all-orders`,
+                    {
+                        method: "GET",
+                        headers
+                    }
+                ),
 
-                fetch(`${API_URL}/api/user/all`, {
-                    headers,
-                }),
+                fetch(
+                    `${API_URL}/api/food/list`,
+                    {
+                        method: "GET",
+                        headers
+                    }
+                ),
+
+                fetch(
+                    `${API_URL}/api/user/all`,
+                    {
+                        method: "GET",
+                        headers
+                    }
+                )
+
             ]);
 
-            const ordersData = await ordersResponse.json();
-            const foodsData = await foodsResponse.json();
-            const customersData = await customersResponse.json();
 
-            // Orders
-            if (ordersResponse.ok && ordersData.success) {
-                setOrders(ordersData.orders || []);
-            } else {
-                throw new Error(
-                    ordersData.message || "Failed to load orders"
+            // =================================================
+            // CONVERT RESPONSES TO JSON
+            // =================================================
+
+            const ordersData =
+                await ordersResponse.json();
+
+            const foodsData =
+                await foodsResponse.json();
+
+            const customersData =
+                await customersResponse.json();
+
+
+            // =================================================
+            // ORDERS
+            // =================================================
+
+            if (
+                ordersResponse.ok &&
+                ordersData.success
+            ) {
+
+                setOrders(
+                    ordersData.orders || []
                 );
-            }
 
-            // Foods
-            if (foodsResponse.ok && foodsData.success) {
-                setFoods(foodsData.foods || []);
             } else {
-                setFoods([]);
+
+                throw new Error(
+                    ordersData.message ||
+                    "Failed to load orders"
+                );
+
             }
 
-            // Customers
+
+            // =================================================
+            // FOODS
+            // =================================================
+
+            if (
+                foodsResponse.ok &&
+                foodsData.success
+            ) {
+
+                setFoods(
+                    foodsData.foods || []
+                );
+
+            } else {
+
+                setFoods([]);
+
+            }
+
+
+            // =================================================
+            // CUSTOMERS
+            // =================================================
+
             if (
                 customersResponse.ok &&
                 customersData.success
             ) {
+
                 setCustomers(
                     customersData.customers || []
                 );
+
             } else {
+
                 setCustomers([]);
+
             }
+
         } catch (err) {
-            console.error("Dashboard error:", err);
+
+            console.error(
+                "Dashboard error:",
+                err
+            );
+
 
             setError(
-                err.message || "Failed to load dashboard"
+                err.message ||
+                "Failed to load dashboard"
             );
+
         } finally {
+
             setLoading(false);
+
         }
+
     };
 
+
+    // =====================================================
+    // LOAD DASHBOARD
+    // =====================================================
+
     useEffect(() => {
+
         fetchDashboard();
+
     }, []);
 
-    // =========================================
+
+    // =====================================================
     // ACTIVE ORDERS
-    // =========================================
+    // =====================================================
 
-    const activeOrders = orders.filter(
-        (order) => order.status !== "Cancelled"
-    );
+    const activeOrders =
+        orders.filter(
+            (order) =>
+                order.status !== "Cancelled"
+        );
 
-    // =========================================
+
+    // =====================================================
     // DASHBOARD NUMBERS
-    // =========================================
+    // =====================================================
 
-    const totalOrders = activeOrders.length;
+    const totalOrders =
+        activeOrders.length;
 
-    const totalRevenue = activeOrders.reduce(
-        (sum, order) =>
-            sum + Number(order.total || 0),
-        0
-    );
 
-    const pendingOrders = orders.filter(
-        (order) => order.status === "Pending"
-    ).length;
+    const totalRevenue =
+        activeOrders.reduce(
+            (sum, order) =>
+                sum +
+                Number(order.total || 0),
+            0
+        );
 
-    const outForDelivery = orders.filter(
-        (order) => order.status === "Out for Delivery"
-    ).length;
 
-    const deliveredOrders = orders.filter(
-        (order) => order.status === "Delivered"
-    ).length;
+    const pendingOrders =
+        orders.filter(
+            (order) =>
+                order.status === "Pending"
+        ).length;
 
-    const totalFoodItems = foods.length;
 
-    const totalCustomers = customers.length;
+    const outForDelivery =
+        orders.filter(
+            (order) =>
+                order.status ===
+                "Out for Delivery"
+        ).length;
 
-    // =========================================
+
+    const deliveredOrders =
+        orders.filter(
+            (order) =>
+                order.status === "Delivered"
+        ).length;
+
+
+    const totalFoodItems =
+        foods.length;
+
+
+    const totalCustomers =
+        customers.length;
+
+
+    // =====================================================
     // RECENT ORDERS
-    // =========================================
+    // =====================================================
 
-    const recentOrders = [...orders]
-        .sort(
-            (a, b) =>
-                new Date(b.createdAt) -
-                new Date(a.createdAt)
-        )
-        .slice(0, 5);
+    const recentOrders =
+        [...orders]
+            .sort(
+                (a, b) =>
+                    new Date(
+                        b.createdAt
+                    ) -
+                    new Date(
+                        a.createdAt
+                    )
+            )
+            .slice(0, 5);
 
-    // =========================================
+
+    // =====================================================
     // LOADING
-    // =========================================
+    // =====================================================
 
     if (loading) {
+
         return (
+
             <div className="dashboard-page">
+
                 <div className="dashboard-loading">
+
                     <div className="dashboard-spinner"></div>
-                    <p>Loading dashboard...</p>
+
+                    <p>
+                        Loading dashboard...
+                    </p>
+
                 </div>
+
             </div>
+
         );
+
     }
 
-    // =========================================
+
+    // =====================================================
     // ERROR
-    // =========================================
+    // =====================================================
 
     if (error) {
+
         return (
+
             <div className="dashboard-page">
+
                 <div className="dashboard-error">
+
                     <div className="dashboard-error-icon">
                         ⚠️
                     </div>
+
 
                     <h3>
                         Unable to load dashboard
                     </h3>
 
-                    <p>{error}</p>
 
-                    <button onClick={fetchDashboard}>
+                    <p>
+                        {error}
+                    </p>
+
+
+                    <button
+                        onClick={fetchDashboard}
+                    >
                         Try Again
                     </button>
+
                 </div>
+
             </div>
+
         );
+
     }
 
+
+    // =====================================================
+    // DASHBOARD
+    // =====================================================
+
     return (
+
         <div className="dashboard-page">
 
-            {/* =====================================
+
+            {/* =================================================
                 HEADER
-            ====================================== */}
+            ================================================= */}
 
             <div className="dashboard-header">
 
                 <div>
-                    <h1>Dashboard</h1>
+
+                    <h1>
+                        Dashboard
+                    </h1>
+
 
                     <p>
                         Welcome to your food delivery
                         admin panel
                     </p>
+
                 </div>
+
 
                 <button
                     className="dashboard-refresh"
@@ -206,11 +391,13 @@ function Dashboard() {
 
             </div>
 
-            {/* =====================================
+
+            {/* =================================================
                 TOP CARDS
-            ====================================== */}
+            ================================================= */}
 
             <div className="dashboard-cards">
+
 
                 {/* REVENUE */}
 
@@ -220,13 +407,18 @@ function Dashboard() {
                         💰
                     </div>
 
+
                     <div className="dashboard-card-info">
 
-                        <p>Total Revenue</p>
+                        <p>
+                            Total Revenue
+                        </p>
+
 
                         <h2>
                             ${totalRevenue.toFixed(2)}
                         </h2>
+
 
                         <span>
                             From active orders
@@ -236,6 +428,7 @@ function Dashboard() {
 
                 </div>
 
+
                 {/* ORDERS */}
 
                 <div className="dashboard-card">
@@ -244,11 +437,18 @@ function Dashboard() {
                         🛒
                     </div>
 
+
                     <div className="dashboard-card-info">
 
-                        <p>Total Orders</p>
+                        <p>
+                            Total Orders
+                        </p>
 
-                        <h2>{totalOrders}</h2>
+
+                        <h2>
+                            {totalOrders}
+                        </h2>
+
 
                         <span>
                             All customer orders
@@ -258,6 +458,7 @@ function Dashboard() {
 
                 </div>
 
+
                 {/* CUSTOMERS */}
 
                 <div className="dashboard-card">
@@ -266,11 +467,18 @@ function Dashboard() {
                         👥
                     </div>
 
+
                     <div className="dashboard-card-info">
 
-                        <p>Customers</p>
+                        <p>
+                            Customers
+                        </p>
 
-                        <h2>{totalCustomers}</h2>
+
+                        <h2>
+                            {totalCustomers}
+                        </h2>
+
 
                         <span>
                             Registered customers
@@ -280,6 +488,7 @@ function Dashboard() {
 
                 </div>
 
+
                 {/* FOOD */}
 
                 <div className="dashboard-card">
@@ -288,11 +497,18 @@ function Dashboard() {
                         🍔
                     </div>
 
+
                     <div className="dashboard-card-info">
 
-                        <p>Total Food Items</p>
+                        <p>
+                            Total Food Items
+                        </p>
 
-                        <h2>{totalFoodItems}</h2>
+
+                        <h2>
+                            {totalFoodItems}
+                        </h2>
+
 
                         <span>
                             Available in menu
@@ -304,11 +520,13 @@ function Dashboard() {
 
             </div>
 
-            {/* =====================================
+
+            {/* =================================================
                 ORDER STATUS CARDS
-            ====================================== */}
+            ================================================= */}
 
             <div className="dashboard-status-cards">
+
 
                 <div className="status-card">
 
@@ -316,12 +534,22 @@ function Dashboard() {
                         ⏳
                     </span>
 
+
                     <div>
-                        <p>Pending Orders</p>
-                        <h3>{pendingOrders}</h3>
+
+                        <p>
+                            Pending Orders
+                        </p>
+
+
+                        <h3>
+                            {pendingOrders}
+                        </h3>
+
                     </div>
 
                 </div>
+
 
                 <div className="status-card">
 
@@ -329,12 +557,22 @@ function Dashboard() {
                         🚚
                     </span>
 
+
                     <div>
-                        <p>Out for Delivery</p>
-                        <h3>{outForDelivery}</h3>
+
+                        <p>
+                            Out for Delivery
+                        </p>
+
+
+                        <h3>
+                            {outForDelivery}
+                        </h3>
+
                     </div>
 
                 </div>
+
 
                 <div className="status-card">
 
@@ -342,43 +580,66 @@ function Dashboard() {
                         ✅
                     </span>
 
+
                     <div>
-                        <p>Delivered Orders</p>
-                        <h3>{deliveredOrders}</h3>
+
+                        <p>
+                            Delivered Orders
+                        </p>
+
+
+                        <h3>
+                            {deliveredOrders}
+                        </h3>
+
                     </div>
 
                 </div>
 
             </div>
 
-            {/* =====================================
+
+            {/* =================================================
                 LOWER SECTION
-            ====================================== */}
+            ================================================= */}
 
             <div className="dashboard-bottom">
 
-                {/* RECENT ORDERS */}
+
+                {/* =================================================
+                    RECENT ORDERS
+                ================================================= */}
 
                 <div className="recent-orders">
 
                     <div className="section-title">
 
                         <div>
-                            <h2>Recent Orders</h2>
+
+                            <h2>
+                                Recent Orders
+                            </h2>
+
 
                             <p>
                                 Latest customer orders
                             </p>
+
                         </div>
 
                     </div>
 
+
                     {recentOrders.length === 0 ? (
+
                         <div className="dashboard-empty">
                             No orders available
                         </div>
+
                     ) : (
+
                         <div className="orders-table">
+
 
                             <div className="orders-table-header">
 
@@ -386,13 +647,16 @@ function Dashboard() {
                                     Order ID
                                 </span>
 
+
                                 <span>
                                     Customer
                                 </span>
 
+
                                 <span>
                                     Amount
                                 </span>
+
 
                                 <span>
                                     Status
@@ -400,34 +664,46 @@ function Dashboard() {
 
                             </div>
 
+
                             {recentOrders.map(
                                 (order) => (
+
                                     <div
                                         className="orders-table-row"
                                         key={order._id}
                                     >
 
+
                                         <span>
+
                                             #
                                             {order._id
                                                 ?.slice(-6)
                                                 .toUpperCase()}
+
                                         </span>
 
+
                                         <span>
+
                                             {order.firstName}{" "}
                                             {order.lastName}
+
                                         </span>
 
+
                                         <span>
+
                                             $
                                             {Number(
-                                                order.total ||
-                                                    0
+                                                order.total || 0
                                             ).toFixed(2)}
+
                                         </span>
 
+
                                         <span>
+
                                             <b
                                                 className={`order-status ${String(
                                                     order.status
@@ -438,26 +714,33 @@ function Dashboard() {
                                                         "-"
                                                     )}`}
                                             >
-                                                {
-                                                    order.status
-                                                }
+                                                {order.status}
                                             </b>
+
                                         </span>
 
                                     </div>
+
                                 )
                             )}
 
                         </div>
+
                     )}
 
                 </div>
 
-                {/* QUICK SUMMARY */}
+
+                {/* =================================================
+                    QUICK SUMMARY
+                ================================================= */}
 
                 <div className="quick-summary">
 
-                    <h2>Quick Summary</h2>
+                    <h2>
+                        Quick Summary
+                    </h2>
+
 
                     <div className="summary-row">
 
@@ -465,11 +748,13 @@ function Dashboard() {
                             Total Orders
                         </span>
 
+
                         <strong>
                             {totalOrders}
                         </strong>
 
                     </div>
+
 
                     <div className="summary-row">
 
@@ -477,11 +762,13 @@ function Dashboard() {
                             Total Sales
                         </span>
 
+
                         <strong>
                             ${totalRevenue.toFixed(2)}
                         </strong>
 
                     </div>
+
 
                     <div className="summary-row">
 
@@ -489,11 +776,13 @@ function Dashboard() {
                             Pending Orders
                         </span>
 
+
                         <strong>
                             {pendingOrders}
                         </strong>
 
                     </div>
+
 
                     <div className="summary-row">
 
@@ -501,11 +790,13 @@ function Dashboard() {
                             Delivered Orders
                         </span>
 
+
                         <strong>
                             {deliveredOrders}
                         </strong>
 
                     </div>
+
 
                     <div className="summary-row">
 
@@ -513,17 +804,20 @@ function Dashboard() {
                             Customers
                         </span>
 
+
                         <strong>
                             {totalCustomers}
                         </strong>
 
                     </div>
 
+
                     <div className="summary-row">
 
                         <span>
                             Food Items
                         </span>
+
 
                         <strong>
                             {totalFoodItems}
@@ -536,7 +830,10 @@ function Dashboard() {
             </div>
 
         </div>
+
     );
+
 }
+
 
 export default Dashboard;
