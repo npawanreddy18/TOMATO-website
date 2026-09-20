@@ -1,82 +1,50 @@
-/* =====================================================
-   GLOBAL ADMIN LAYOUT
-===================================================== */
-
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
-.admin-app {
+html,
+body,
+#root {
     width: 100%;
-    min-height: 100vh;
+    min-height: 100%;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
     background: #f7f7f7;
 }
 
-/* =====================================================
-   MAIN AREA
-===================================================== */
-
-.admin-main {
+.admin-app {
+    display: flex;
     min-height: 100vh;
-    margin-left: 240px;
-    width: calc(100% - 240px);
-    min-width: 0;
+    width: 100%;
 }
 
-/* =====================================================
-   PAGE CONTENT
-===================================================== */
+.admin-main {
+    flex: 1;
+    min-width: 0;
+    margin-left: 240px;
+}
 
 .admin-content {
     width: 100%;
-    min-width: 0;
-    padding: 100px 30px 40px;
+    padding: 30px;
 }
 
-/* =====================================================
-   TABLET
-===================================================== */
-
-@media (max-width: 1000px) {
-
+@media (max-width: 900px) {
     .admin-main {
-        margin-left: 210px;
-        width: calc(100% - 210px);
+        margin-left: 0;
     }
 
     .admin-content {
-        padding: 95px 22px 35px;
+        padding: 25px 20px;
     }
 }
 
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media (max-width: 700px) {
-
-    .admin-main {
-        margin-left: 78px;
-        width: calc(100% - 78px);
-    }
-
+@media (max-width: 600px) {
     .admin-content {
-        padding: 90px 15px 30px;
-    }
-}
-
-/* =====================================================
-   SMALL MOBILE
-===================================================== */
-
-@media (max-width: 450px) {
-
-    .admin-main {
-        margin-left: 70px;
-        width: calc(100% - 70px);
-    }
-
-    .admin-content {
-        padding: 85px 10px 25px;
+        padding: 20px 14px;
     }
 }

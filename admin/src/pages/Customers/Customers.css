@@ -1,263 +1,85 @@
 .customers-page {
     width: 100%;
-    padding: 30px;
 }
 
-
-/* =========================================
-   TITLE
-========================================= */
-
-.customers-title {
+.customers-page-header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    gap: 20px;
+    align-items: center;
     margin-bottom: 25px;
 }
 
-.customers-page h2 {
+.customers-page-header h1 {
+    margin: 0;
     font-size: 28px;
-    margin: 0;
-    color: #222;
+    color: #17183b;
 }
 
-.customers-title p {
-    margin: 7px 0 0;
+.customers-page-header p {
+    margin: 6px 0 0;
     color: #777;
     font-size: 14px;
 }
-
-
-/* =========================================
-   CUSTOMER COUNT
-========================================= */
-
-.customer-count {
-    background: white;
-    padding: 12px 20px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-}
-
-.customer-count span {
-    color: #777;
-    font-size: 13px;
-}
-
-.customer-count strong {
-    color: #ff573f;
-    font-size: 22px;
-}
-
-
-/* =========================================
-   CUSTOMERS BOX
-========================================= */
-
-.customers-box {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    overflow-x: auto;
-}
-
-
-/* =========================================
-   HEADER + ROW
-========================================= */
-
-.customers-header,
-.customer-row {
-    min-width: 650px;
-
-    display: grid;
-
-    grid-template-columns:
-        0.5fr
-        1.3fr
-        2fr
-        1fr
-        1fr;
-
-    align-items: center;
-
-    gap: 15px;
-
-    padding: 16px;
-}
-
-.customers-header {
-    background: #f5f5f5;
-    font-weight: bold;
-    border-radius: 8px;
-    font-size: 13px;
-}
-
-.customer-row {
-    border-bottom: 1px solid #eee;
-    font-size: 14px;
-    color: #444;
-}
-
-
-/* =========================================
-   CUSTOMER NAME
-========================================= */
-
-.customer-name {
-    font-weight: 600;
-    color: #222;
-}
-
-.customer-email {
-    color: #666;
-}
-
-
-/* =========================================
-   STATUS
-========================================= */
-
-.customer-active {
-    width: fit-content;
-
-    display: inline-block;
-
-    padding: 7px 12px;
-
-    border-radius: 20px;
-
-    font-size: 12px;
-
-    font-weight: bold;
-
-    background: #d9f7df;
-
-    color: #168b32;
-}
-
-
-/* =========================================
-   NO CUSTOMERS
-========================================= */
-
-.no-customers {
-    text-align: center;
-    padding: 60px 20px;
-}
-
-.no-customers > div {
-    font-size: 45px;
-    margin-bottom: 12px;
-}
-
-.no-customers h3 {
-    margin: 0 0 8px;
-    color: #333;
-}
-
-.no-customers p {
-    margin: 0;
-    color: #888;
-}
-
-
-/* =========================================
-   LOADING
-========================================= */
 
 .customers-message {
-    margin-top: 20px;
     background: white;
-    padding: 50px 20px;
+    padding: 40px;
     border-radius: 12px;
     text-align: center;
-    color: #777;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    color: #666;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-
-/* =========================================
-   ERROR
-========================================= */
-
-.customers-error strong {
-    display: block;
-    color: #c62828;
-    font-size: 18px;
-    margin-bottom: 8px;
+.customers-message.error {
+    color: #d93025;
 }
 
-.customers-error p {
-    margin: 0 0 20px;
+.customers-table-container {
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    overflow-x: auto;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-.customers-error button {
-    border: none;
-    background: #ff573f;
-    color: white;
-    padding: 10px 18px;
-    border-radius: 6px;
-    cursor: pointer;
+.customers-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
 }
 
-.customers-error button:hover {
-    background: #e94a34;
+.customers-table th {
+    background: #f8f8f8;
+    color: #555;
+    font-size: 13px;
+    text-align: left;
+    padding: 16px;
+    border-bottom: 1px solid #eee;
 }
 
+.customers-table td {
+    padding: 16px;
+    border-bottom: 1px solid #eee;
+    color: #555;
+    font-size: 14px;
+}
 
-/* =========================================
-   TABLET
-========================================= */
+.customers-table tbody tr:hover {
+    background: #fafafa;
+}
+
+.customers-table td:first-child {
+    color: #999;
+    width: 60px;
+}
 
 @media (max-width: 700px) {
-
-    .customers-page {
-        padding: 20px 15px;
-    }
-
-    .customers-title {
+    .customers-page-header {
         align-items: flex-start;
-        flex-direction: column;
+        gap: 15px;
     }
 
-    .customer-count {
-        width: 100%;
-        justify-content: space-between;
+    .customers-page-header h1 {
+        font-size: 24px;
     }
-
-    .customers-box {
-        padding: 12px;
-    }
-
-}
-
-
-/* =========================================
-   MOBILE
-========================================= */
-
-@media (max-width: 450px) {
-
-    .customers-page {
-        padding: 15px 10px;
-    }
-
-    .customers-page h2 {
-        font-size: 23px;
-    }
-
-    .customers-title p {
-        font-size: 12px;
-    }
-
-    .customers-box {
-        padding: 8px;
-    }
-
 }
