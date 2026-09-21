@@ -35,6 +35,7 @@ const storage = multer.diskStorage({
 // =====================================================
 
 const upload = multer({
+
     storage: storage,
 
     limits: {
@@ -43,19 +44,22 @@ const upload = multer({
 
     fileFilter: (req, file, cb) => {
 
-        if (
-            file.mimetype.startsWith("image/")
-        ) {
+        if (file.mimetype.startsWith("image/")) {
+
             cb(null, true);
+
         } else {
+
             cb(
                 new Error(
                     "Only image files are allowed"
                 )
             );
+
         }
 
     }
+
 });
 
 
@@ -76,8 +80,11 @@ foodRouter.get(
                     });
 
             res.status(200).json({
+
                 success: true,
+
                 foods: foods
+
             });
 
         } catch (error) {
@@ -88,9 +95,12 @@ foodRouter.get(
             );
 
             res.status(500).json({
+
                 success: false,
+
                 message:
                     "Unable to fetch food items"
+
             });
 
         }
@@ -131,9 +141,12 @@ foodRouter.post(
             ) {
 
                 return res.status(400).json({
+
                     success: false,
+
                     message:
                         "All food details are required"
+
                 });
 
             }
@@ -144,9 +157,12 @@ foodRouter.post(
             if (!req.file) {
 
                 return res.status(400).json({
+
                     success: false,
+
                     message:
                         "Food image is required"
+
                 });
 
             }
@@ -154,8 +170,11 @@ foodRouter.post(
 
             // IMAGE URL
 
+            // Use relative path so it works
+            // locally and on Render.
+
             const imageUrl =
-                `http://localhost:4000/images/${req.file.filename}`;
+                `/images/${req.file.filename}`;
 
 
             // CREATE FOOD
@@ -228,6 +247,7 @@ foodRouter.post(
 foodRouter.put(
     "/update/:id",
     adminAuthMiddleware,
+    upload.single("image"),
 
     async (req, res) => {
 
@@ -258,46 +278,75 @@ foodRouter.put(
                 description,
                 price,
                 category,
-                image,
                 available
             } = req.body;
 
 
+            // UPDATE NAME
+
             if (name !== undefined) {
+
                 food.name = name;
+
             }
 
+
+            // UPDATE DESCRIPTION
 
             if (description !== undefined) {
+
                 food.description =
                     description;
+
             }
 
+
+            // UPDATE PRICE
 
             if (price !== undefined) {
-                food.price = price;
+
+                food.price =
+                    Number(price);
+
             }
 
+
+            // UPDATE CATEGORY
 
             if (category !== undefined) {
+
                 food.category =
                     category;
+
             }
 
 
-            if (image !== undefined) {
-                food.image = image;
+            // UPDATE IMAGE
+
+            if (req.file) {
+
+                food.image =
+                    `/images/${req.file.filename}`;
+
             }
 
+
+            // UPDATE AVAILABILITY
 
             if (available !== undefined) {
+
                 food.available =
-                    available;
+                    available === "true";
+
             }
 
+
+            // SAVE
 
             await food.save();
 
+
+            // RESPONSE
 
             res.status(200).json({
 
