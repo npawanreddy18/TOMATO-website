@@ -39,7 +39,6 @@ https://tomato-backend-dgur.onrender.com
 
 ## 📂 Project Structure
 
-##Text
 food-del/
 ├── frontend/
 ├── backend/
