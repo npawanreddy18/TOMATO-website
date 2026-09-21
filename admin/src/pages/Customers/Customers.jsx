@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Customers.css";
 
-const API_URL = "http://localhost:4000";
+const API_URL = "https://tomato-backend-dgur.onrender.com";
 
 function Customers() {
 
