@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Analytics.css";
 
-const API_URL = "http://localhost:4000";
+const API_URL = "https://tomato-backend-dgur.onrender.com";
 
 const STATUS_LIST = [
     "Pending",
