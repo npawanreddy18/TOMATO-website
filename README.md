@@ -8,7 +8,7 @@ A full-stack food delivery web application built with React, Node.js, Express, a
 https://tomato-website-oiop.onrender.com
 
 ### Admin Panel
-https://tomato-admin.onrender.com
+https://tomato-admin-olzf.onrender.com
 
 ### Backend API
 https://tomato-backend-dgur.onrender.com
