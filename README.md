@@ -1,20 +1,24 @@
-# 🍅 Tomato – Food Delivery Website
+# Tomato – Food Delivery Website.
 
-A full-stack food delivery website built using React, Node.js, Express, and MongoDB.
+A full-stack food delivery web application built with React, Node.js, Express, and MongoDB.
 
 ## 🚀 Live Demo
 
 ### Customer Website
 https://tomato-website-oiop.onrender.com
 
+### Admin Panel
+https://tomato-admin.onrender.com
+
 ### Backend API
 https://tomato-backend-dgur.onrender.com
 
 ## ✨ Features
+
 - Customer authentication
 - Food browsing
 - Search
-- Cart
+- Cart management
 - Online ordering
 - Order history
 - Admin dashboard
@@ -24,6 +28,7 @@ https://tomato-backend-dgur.onrender.com
 - Analytics
 
 ## 🛠️ Tech Stack
+
 - React
 - Node.js
 - Express.js
@@ -35,16 +40,7 @@ https://tomato-backend-dgur.onrender.com
 ## 📂 Project Structure
 
 ##Text
-TOMATO-website/
-│
+food-del/
 ├── frontend/
-│   └── Customer website
-│
 ├── backend/
-│   └── Node.js + Express API
-│
-├── admin/
-│   └── Admin dashboard
-│
-├── .gitignore
-└── README.md
+└── admin/
