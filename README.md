@@ -43,3 +43,14 @@ food-del/
 ├── frontend/
 ├── backend/
 └── admin/
+
+## 🌐 Deployment
+- Frontend → Render
+- Backend → Render
+- Admin Panel → Render
+- Database → MongoDB Atlas
+
+
+## 👨‍💻 Author
+Pawan Reddy M
+GitHub: https://github.com/npawanreddy18
