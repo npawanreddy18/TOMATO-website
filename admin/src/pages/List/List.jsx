@@ -12,6 +12,16 @@ const getImageUrl = (image) => {
         return "";
     }
 
+    // IMPORTANT:
+    // Old database records contain localhost:4000.
+    // Convert them to the Render backend URL.
+    if (image.includes("http://localhost:4000")) {
+        return image.replace(
+            "http://localhost:4000",
+            API_URL
+        );
+    }
+
     // Already a complete URL
     if (
         image.startsWith("http://") ||
@@ -745,7 +755,6 @@ function List() {
                                             </td>
 
                                         </tr>
-
                                     )
                                 )}
 
@@ -860,9 +869,7 @@ function List() {
                                             e
                                         ) =>
                                             setImage(
-                                                e
-                                                    .target
-                                                    .files[0] ||
+                                                e.target.files[0] ||
                                                     null
                                             )
                                         }
@@ -888,9 +895,7 @@ function List() {
                                         e
                                     ) =>
                                         setName(
-                                            e
-                                                .target
-                                                .value
+                                            e.target.value
                                         )
                                     }
                                 />
@@ -914,9 +919,7 @@ function List() {
                                         e
                                     ) =>
                                         setDescription(
-                                            e
-                                                .target
-                                                .value
+                                            e.target.value
                                         )
                                     }
                                 ></textarea>
@@ -946,9 +949,7 @@ function List() {
                                             e
                                         ) =>
                                             setPrice(
-                                                e
-                                                    .target
-                                                    .value
+                                                e.target.value
                                             )
                                         }
                                     />
@@ -970,9 +971,7 @@ function List() {
                                             e
                                         ) =>
                                             setCategory(
-                                                e
-                                                    .target
-                                                    .value
+                                                e.target.value
                                             )
                                         }
                                     >
@@ -1058,9 +1057,7 @@ function List() {
                                             e
                                         ) =>
                                             setAvailable(
-                                                e
-                                                    .target
-                                                    .checked
+                                                e.target.checked
                                             )
                                         }
                                     />
