@@ -51,10 +51,12 @@
 
     gap: 30px;
 
-    margin-left: auto;
-    margin-right: 45px;
-}
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 
+    margin: 0;
+}
 
 /* MENU LINKS */
 
