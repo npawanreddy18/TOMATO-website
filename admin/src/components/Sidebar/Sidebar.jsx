@@ -14,7 +14,7 @@ function Sidebar({ activePage, setActivePage, setIsLoggedIn }) {
 
             {/* LOGO */}
             <div className="sidebar-logo">
-                <span>🍅</span>
+                <span></span>
                 <h2>Tomato.</h2>
             </div>
 
