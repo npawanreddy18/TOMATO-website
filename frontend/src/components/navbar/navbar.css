@@ -1,7 +1,6 @@
 /* =========================================
    NAVBAR
 ========================================= */
-
 .navbar {
     width: 92%;
     max-width: 1400px;
@@ -17,10 +16,10 @@
 
     background: white;
 
-    position: relative;
-    z-index: 100;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
-
 
 /* =========================================
    LOGO
