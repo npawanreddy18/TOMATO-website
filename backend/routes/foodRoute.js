@@ -1,8 +1,8 @@
 import express from "express";
 import multer from "multer";
-
 import FoodModel from "../models/foodModel.js";
 import adminAuthMiddleware from "../middleware/adminAuthMiddleware.js";
+import cloudinary from "../config/cloudinary.js";
 
 const foodRouter = express.Router();
 
@@ -11,23 +11,9 @@ const foodRouter = express.Router();
 // MULTER IMAGE STORAGE
 // =====================================================
 
-const storage = multer.diskStorage({
-
-    destination: (req, file, cb) => {
-        cb(null, "uploads/");
-    },
-
-    filename: (req, file, cb) => {
-
-        const uniqueName =
-            Date.now() +
-            "-" +
-            file.originalname.replace(/\s+/g, "-");
-
-        cb(null, uniqueName);
-    }
-
-});
+// Store image temporarily in memory.
+// The image will then be uploaded to Cloudinary.
+const storage = multer.memoryStorage();
 
 
 // =====================================================
@@ -35,7 +21,6 @@ const storage = multer.diskStorage({
 // =====================================================
 
 const upload = multer({
-
     storage: storage,
 
     limits: {
@@ -57,10 +42,45 @@ const upload = multer({
             );
 
         }
-
     }
-
 });
+
+
+// =====================================================
+// CLOUDINARY IMAGE UPLOAD
+// =====================================================
+
+const uploadToCloudinary = (buffer) => {
+
+    return new Promise((resolve, reject) => {
+
+        const stream =
+            cloudinary.uploader.upload_stream(
+                {
+                    folder: "tomato-food",
+                    resource_type: "image"
+                },
+
+                (error, result) => {
+
+                    if (error) {
+
+                        reject(error);
+
+                    } else {
+
+                        resolve(result);
+
+                    }
+
+                }
+            );
+
+        stream.end(buffer);
+
+    });
+
+};
 
 
 // =====================================================
@@ -115,7 +135,9 @@ foodRouter.get(
 
 foodRouter.post(
     "/add",
+
     adminAuthMiddleware,
+
     upload.single("image"),
 
     async (req, res) => {
@@ -168,13 +190,18 @@ foodRouter.post(
             }
 
 
-            // IMAGE URL
+            // UPLOAD IMAGE TO CLOUDINARY
 
-            // Use relative path so it works
-            // locally and on Render.
+            const cloudinaryResult =
+                await uploadToCloudinary(
+                    req.file.buffer
+                );
+
+
+            // CLOUDINARY IMAGE URL
 
             const imageUrl =
-                `/images/${req.file.filename}`;
+                cloudinaryResult.secure_url;
 
 
             // CREATE FOOD
@@ -246,7 +273,9 @@ foodRouter.post(
 
 foodRouter.put(
     "/update/:id",
+
     adminAuthMiddleware,
+
     upload.single("image"),
 
     async (req, res) => {
@@ -325,8 +354,13 @@ foodRouter.put(
 
             if (req.file) {
 
+                const cloudinaryResult =
+                    await uploadToCloudinary(
+                        req.file.buffer
+                    );
+
                 food.image =
-                    `/images/${req.file.filename}`;
+                    cloudinaryResult.secure_url;
 
             }
 
@@ -387,6 +421,7 @@ foodRouter.put(
 
 foodRouter.delete(
     "/delete/:id",
+
     adminAuthMiddleware,
 
     async (req, res) => {
@@ -455,6 +490,7 @@ foodRouter.delete(
 
 foodRouter.put(
     "/availability/:id",
+
     adminAuthMiddleware,
 
     async (req, res) => {
