@@ -1,3 +1,4 @@
+
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,40 +9,43 @@ import {
 import "./cart.css";
 
 
-const Cart = () => {const API_URL = "https://tomato-backend-dgur.onrender.com";
+const Cart = () => {
 
-const getImageUrl = (image) => {
+    const API_URL = "https://tomato-backend-dgur.onrender.com";
 
-    if (!image) {
-        return "";
-    }
+    const getImageUrl = (image) => {
 
-    // Already a complete Render/backend URL
-    if (image.startsWith("https://")) {
-        return image;
-    }
+        if (!image) {
+            return "";
+        }
 
-    // Old localhost URL
-    if (image.startsWith("http://localhost:4000")) {
-        return image.replace(
-            "http://localhost:4000",
-            API_URL
-        );
-    }
+        // Already a complete Render/backend URL
+        if (image.startsWith("https://")) {
+            return image;
+        }
 
-    // Image already starts with /images
-    if (image.startsWith("/images/")) {
-        return `₹{API_URL}₹{image}`;
-    }
+        // Old localhost URL
+        if (image.startsWith("http://localhost:4000")) {
+            return image.replace(
+                "http://localhost:4000",
+                API_URL
+            );
+        }
 
-    // Image starts with images/ but has no /
-    if (image.startsWith("images/")) {
-        return `₹{API_URL}/₹{image}`;
-    }
+        // Image already starts with /images
+        if (image.startsWith("/images/")) {
+            return `${API_URL}${image}`;
+        }
 
-    // Backend returned only the filename
-    return `₹{API_URL}/images/₹{image}`;
-};
+        // Image starts with images/ but has no /
+        if (image.startsWith("images/")) {
+            return `${API_URL}/${image}`;
+        }
+
+        // Backend returned only the filename
+        return `${API_URL}/images/${image}`;
+    };
+
 
     const navigate = useNavigate();
 
@@ -55,9 +59,9 @@ const getImageUrl = (image) => {
         deliveryFee,
         cartTotal,
 
-        currency,
         minimumOrder,
         minimumOrderReached
+
     } = useContext(StoreContext);
 
 
@@ -217,20 +221,20 @@ const getImageUrl = (image) => {
 
                                 <div className="cart-item-image">
 
-    <img
-        src={getImageUrl(item.image)}
-        alt={item.name}
-        loading="lazy"
-        onError={(e) => {
-            console.error(
-                "Cart image failed:",
-                item.image
-            );
-            e.currentTarget.style.display = "none";
-        }}
-    />
+                                    <img
+                                        src={getImageUrl(item.image)}
+                                        alt={item.name}
+                                        loading="lazy"
+                                        onError={(e) => {
+                                            console.error(
+                                                "Cart image failed:",
+                                                item.image
+                                            );
+                                            e.currentTarget.style.display = "none";
+                                        }}
+                                    />
 
-</div>
+                                </div>
 
 
                                 {/* NAME */}
@@ -257,8 +261,7 @@ const getImageUrl = (image) => {
                                     </span>
 
                                     <strong>
-                                        {currency}
-                                        {Number(
+                                        ₹{Number(
                                             item.price
                                         ).toFixed(2)}
                                     </strong>
@@ -316,8 +319,7 @@ const getImageUrl = (image) => {
                                     </span>
 
                                     <strong>
-                                        {currency}
-                                        {itemTotal.toFixed(2)}
+                                        ₹{itemTotal.toFixed(2)}
                                     </strong>
 
                                 </div>
@@ -369,8 +371,7 @@ const getImageUrl = (image) => {
                             </p>
 
                             <p>
-                                {currency}
-                                {Number(
+                                ₹{Number(
                                     cartSubtotal
                                 ).toFixed(2)}
                             </p>
@@ -387,7 +388,7 @@ const getImageUrl = (image) => {
                             <p>
                                 {deliveryFee === 0
                                     ? "FREE"
-                                    : `₹{currency}₹{Number(
+                                    : `₹${Number(
                                         deliveryFee
                                     ).toFixed(2)}`}
                             </p>
@@ -403,8 +404,7 @@ const getImageUrl = (image) => {
                             <p className="delivery-message">
 
                                 Add{" "}
-                                {currency}
-                                {(
+                                ₹{(
                                     minimumOrder -
                                     cartSubtotal
                                 ).toFixed(2)}
@@ -412,8 +412,7 @@ const getImageUrl = (image) => {
                                 {" "}more to reach the
                                 minimum order of{" "}
 
-                                {currency}
-                                {minimumOrder.toFixed(2)}.
+                                ₹{minimumOrder.toFixed(2)}.
 
                             </p>
 
@@ -427,8 +426,7 @@ const getImageUrl = (image) => {
                             </b>
 
                             <b>
-                                {currency}
-                                {Number(
+                                ₹{Number(
                                     cartTotal
                                 ).toFixed(2)}
                             </b>

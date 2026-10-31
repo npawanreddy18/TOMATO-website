@@ -16,7 +16,6 @@ const PlaceOrder = () => {
         deliveryFee,
         cartTotal,
         clearCart,
-        currency,
         minimumOrder,
         minimumOrderReached
     } = useContext(StoreContext);
@@ -136,7 +135,7 @@ const PlaceOrder = () => {
         if (!minimumOrderReached) {
 
             alert(
-                `Minimum order amount is ${currency}${Number(
+                `Minimum order amount is ₹${Number(
                     minimumOrder
                 ).toFixed(2)}`
             );
@@ -389,9 +388,7 @@ const PlaceOrder = () => {
 
                         Total:{" "}
 
-                        {currency}
-
-                        {Number(
+                        ₹{Number(
                             placedOrderTotal
                         ).toFixed(2)}
 
@@ -758,9 +755,7 @@ const PlaceOrder = () => {
 
                         <span>
 
-                            {currency}
-
-                            {Number(
+                            ₹{Number(
                                 cartSubtotal
                             ).toFixed(2)}
 
@@ -783,7 +778,7 @@ const PlaceOrder = () => {
                                 deliveryFee
                             ) === 0
                                 ? "FREE"
-                                : `${currency}${Number(
+                                : `₹${Number(
                                       deliveryFee
                                   ).toFixed(2)}`}
 
@@ -811,9 +806,7 @@ const PlaceOrder = () => {
 
                             Minimum order:{" "}
 
-                            {currency}
-
-                            {Number(
+                            ₹{Number(
                                 minimumOrder
                             ).toFixed(2)}
 
@@ -832,9 +825,7 @@ const PlaceOrder = () => {
 
                         <b>
 
-                            {currency}
-
-                            {Number(
+                            ₹{Number(
                                 cartTotal
                             ).toFixed(2)}
 
