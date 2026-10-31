@@ -263,7 +263,7 @@ const Navbar = ({ setShowLogin }) => {
 
                 <div
                     className={
-                        `navbar-menu ${
+                        `navbar-menu  ₹{
                             mobileMenu
                                 ? "mobile-open"
                                 : ""

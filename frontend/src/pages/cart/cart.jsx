@@ -31,16 +31,16 @@ const getImageUrl = (image) => {
 
     // Image already starts with /images
     if (image.startsWith("/images/")) {
-        return `${API_URL}${image}`;
+        return ` ₹{API_URL} ₹{image}`;
     }
 
     // Image starts with images/ but has no /
     if (image.startsWith("images/")) {
-        return `${API_URL}/${image}`;
+        return ` ₹{API_URL}/ ₹{image}`;
     }
 
     // Backend returned only the filename
-    return `${API_URL}/images/${image}`;
+    return ` ₹{API_URL}/images/ ₹{image}`;
 };
 
     const navigate = useNavigate();
@@ -387,7 +387,7 @@ const getImageUrl = (image) => {
                             <p>
                                 {deliveryFee === 0
                                     ? "FREE"
-                                    : `${currency}${Number(
+                                    : ` ₹{currency} ₹{Number(
                                         deliveryFee
                                     ).toFixed(2)}`}
                             </p>

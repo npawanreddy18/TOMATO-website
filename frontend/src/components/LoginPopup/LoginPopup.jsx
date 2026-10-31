@@ -77,7 +77,7 @@ const LoginPopup = ({ setShowLogin }) => {
             if (currentState === "Sign Up") {
 
                 const response = await fetch(
-                     `${API_URL}/api/user/register`,
+                     ` ₹{API_URL}/api/user/register`,
                     {
                         method: "POST",
 
@@ -140,7 +140,7 @@ const LoginPopup = ({ setShowLogin }) => {
             else {
 
                 const response = await fetch(
-                    `${API_URL}/api/user/login`,
+                    ` ₹{API_URL}/api/user/login`,
                     {
                         method: "POST",
 

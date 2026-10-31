@@ -61,13 +61,13 @@ const MyOrders = () => {
 
             const response =
                 await fetch(
-                    `${url}/api/order/my-orders`,
+                    ` ₹{url}/api/order/my-orders`,
                     {
                         method: "GET",
 
                         headers: {
                             "Authorization":
-                                `Bearer ${token}`
+                                `Bearer  ₹{token}`
                         }
                     }
                 );
@@ -352,7 +352,7 @@ const MyOrders = () => {
 
 
                                         <div
-                                            className={`order-status ${
+                                            className={`order-status  ₹{
                                                 order.status
                                                     ?.toLowerCase()
                                                     .replace(
@@ -443,7 +443,7 @@ const MyOrders = () => {
 
                                                             <span>
 
-                                                                $
+                                                                 ₹
                                                                 {Number(
                                                                     item.price
                                                                 ).toFixed(
@@ -462,7 +462,7 @@ const MyOrders = () => {
 
                                                     <strong>
 
-                                                        $
+                                                         ₹
                                                         {(
                                                             Number(
                                                                 item.price
@@ -521,7 +521,7 @@ const MyOrders = () => {
 
                                                 <strong>
 
-                                                    $
+                                                     ₹
                                                     {Number(
                                                         order.subtotal
                                                     ).toFixed(
@@ -564,7 +564,7 @@ const MyOrders = () => {
 
                                                 <strong>
 
-                                                    $
+                                                     ₹
                                                     {Number(
                                                         order.total
                                                     ).toFixed(

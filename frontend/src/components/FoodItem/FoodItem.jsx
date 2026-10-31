@@ -80,7 +80,7 @@ const FoodItem = ({
             imageUrl.startsWith("/images")
         ) {
 
-            return `${API_URL}${imageUrl}`;
+            return ` ₹{API_URL} ₹{imageUrl}`;
 
         }
 
@@ -88,7 +88,7 @@ const FoodItem = ({
         // If database contains only
         // the image filename.
 
-        return `${API_URL}/images/${imageUrl}`;
+        return ` ₹{API_URL}/images/ ₹{imageUrl}`;
 
     };
 
@@ -127,7 +127,7 @@ const FoodItem = ({
                         onClick={() =>
                             addToCart(id)
                         }
-                        aria-label={`Add ${name} to cart`}
+                        aria-label={`Add  ₹{name} to cart`}
                     >
 
                         <img
@@ -148,7 +148,7 @@ const FoodItem = ({
                             onClick={() =>
                                 removeFromCart(id)
                             }
-                            aria-label={`Remove one ${name}`}
+                            aria-label={`Remove one  ₹{name}`}
                         >
 
                             <img
@@ -171,7 +171,7 @@ const FoodItem = ({
                             onClick={() =>
                                 addToCart(id)
                             }
-                            aria-label={`Add one more ${name}`}
+                            aria-label={`Add one more  ₹{name}`}
                         >
 
                             <span className="plus-icon">

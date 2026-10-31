@@ -98,7 +98,7 @@ const FoodDisplay = ({
 
                 <h2>
                     {searchTerm
-                        ? `Search results for "${searchTerm}"`
+                        ? `Search results for " ₹{searchTerm}"`
                         : "Top dishes near you"}
                 </h2>
 

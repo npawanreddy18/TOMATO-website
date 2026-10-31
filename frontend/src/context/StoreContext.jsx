@@ -15,7 +15,7 @@ const defaultSettings = {
     phone: "",
     deliveryFee: 2,
     minOrder: 0,
-    currency: "$",
+    currency: " ₹",
     notifications: true,
     emailNotifications: true,
     autoConfirm: false
@@ -99,7 +99,7 @@ const StoreContextProvider = ({ children }) => {
             setFoodError("");
 
             const response = await fetch(
-                `${API_URL}/api/food/list`
+                ` ₹{API_URL}/api/food/list`
             );
 
             const data =
@@ -147,7 +147,7 @@ const StoreContextProvider = ({ children }) => {
             setSettingsLoading(true);
 
             const response = await fetch(
-                `${API_URL}/api/settings`
+                ` ₹{API_URL}/api/settings`
             );
 
             const data =
