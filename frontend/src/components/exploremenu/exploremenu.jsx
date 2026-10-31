@@ -63,7 +63,7 @@ const ExploreMenu = ({
                                 index
                             }
                             className={
-                                `explore-menu-item  ₹{
+                                `explore-menu-item ${
                                     category ===
                                     item.menu_name
                                         ? "active"

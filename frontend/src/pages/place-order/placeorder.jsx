@@ -136,7 +136,7 @@ const PlaceOrder = () => {
         if (!minimumOrderReached) {
 
             alert(
-                `Minimum order amount is  ₹{currency} ₹{Number(
+                `Minimum order amount is ${currency}${Number(
                     minimumOrder
                 ).toFixed(2)}`
             );
@@ -260,7 +260,7 @@ const PlaceOrder = () => {
 
             const response =
                 await fetch(
-                    ` ₹{API_URL}/api/order/place`,
+                    `${API_URL}/api/order/place`,
                     {
 
                         method: "POST",
@@ -273,7 +273,7 @@ const PlaceOrder = () => {
                             ...(token
                                 ? {
                                       Authorization:
-                                          `Bearer  ₹{token}`
+                                          `Bearer ${token}`
                                   }
                                 : {})
                         },
@@ -783,7 +783,7 @@ const PlaceOrder = () => {
                                 deliveryFee
                             ) === 0
                                 ? "FREE"
-                                : ` ₹{currency} ₹{Number(
+                                : `${currency}${Number(
                                       deliveryFee
                                   ).toFixed(2)}`}
 
