@@ -219,7 +219,7 @@ const FoodItem = ({
 
                 <p className="food-item-price">
 
-                    ${Number(price).toFixed(2)}
+                    ₹{Number(price).toFixed(2)}
 
                 </p>
 
